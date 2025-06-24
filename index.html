@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AS Guru Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Profile Picture -->
+            <div class="nav-profile">
+                <img src="photos/profile.webp" alt="Profile" class="nav-profile-img">
+            </div>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                <div class="nav-left">
+                    <li class="nav-item">
+                        <a href="#About" class="nav-link">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Contact us</a>
+                    </li>
+                </div>
+                <div class="nav-right">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link more-btn" id="moreBtn">More</a>
+                        <!-- Hamburger that replaces More button on mobile -->
+                        <div class="hamburger" id="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <ul class="dropdown-menu" id="dropdownMenu">
+                            <li><a href="#" class="dropdown-item">Events</a></li>
+                            <li><a href="#" class="dropdown-item">Videos</a></li>
+                            <li><a href="#" class="dropdown-item">Testimonials</a></li>
+                            <li><a href="#" class="dropdown-item">Admin</a></li>
+                        </ul>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <!-- Hero Main Content -->
+                <div class="hero-main">
+                    <!-- Hero Left Section - Logo and Text -->
+                    <div class="hero-left">
+                        <div class="hero-top">
+                            <!-- Hero Logo -->
+                            <div class="hero-logo">
+                                <div class="hero-logo-circle">
+                                    <img src="photos/logo.webp" alt="AS Guru Academy" class="hero-logo-img">
+                                </div>
+                            </div>
+
+                            <!-- Hero Text -->
+                            <div class="hero-text">
+                                <p class="hero-welcome">Welcome to</p>
+                                <h1 class="hero-title">
+                                    <span class="hero-title-line1">A S GURU</span>
+                                    <span class="hero-title-line2">ACADEMY</span>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <!-- Hero Description -->
+                        <p class="hero-description">
+                            Unlock your full potential with the help of our self development programs and Activate your dreams!
+                        </p>
+
+                        <!-- Get Started Button -->
+                        <div class="hero-cta">
+                            <a href="#" class="get-started-btn">Get Started</a>
+                        </div>
+                    </div>
+
+                    <!-- Hero Right Section - Image Slideshow -->
+                    <div class="hero-right">
+                        <div class="hero-slideshow">
+                            <div class="slideshow-container" id="slideshowContainer">
+                                <img src="photos/p1.webp" alt="Slide 1" class="slide-image active">
+                                <img src="photos/p2.webp" alt="Slide 2" class="slide-image">
+                                <img src="photos/p3.webp" alt="Slide 3" class="slide-image">
+                                <img src="photos/p4.webp" alt="Slide 4" class="slide-image">
+                                <img src="photos/p5.webp" alt="Slide 5" class="slide-image">
+                                <img src="photos/p6.webp" alt="Slide 6" class="slide-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities Section -->
+                <div class="activities">
+                    <div class="activity-card">
+                        <div class="card-image">
+                            <img src="photos/bulb.png" alt="Learn Skills" class="card-icon">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Learn the skills</h3>
+                            <p class="card-description">Learn new skills with our wide range of online and offline courses</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="card-image">
+                            <img src="photos/target.png" alt="Set Goals" class="card-icon">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Set your goals</h3>
+                            <p class="card-description">Define your goals and activate then at your own pace</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="card-image">
+                            <img src="photos/chart.png" alt="Track Progress" class="card-icon">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Track your progress</h3>
+                            <p class="card-description">Monitor your progress and reach your full potential.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- about section start -->
+    <section class="About" id="About">
+        <div class="about-container">
+            <h2 class="about-title">About Us</h2>
+            <div class="about-content">
+                <div class="content-card slide-left">
+                    <div class="scrollable-content" id="scrollableContent">
+                        <p class="content-paragraph">
+                            A S GURU Academy, we are dedicated to empowering individuals to unlock their full potential through holistic personal growth. Our mission is to inspire lifelong learning, build confidence, and cultivate essential life skills through structured programs, expert guidance, and a supportive learning environment.
+                        </p>
+                        <p class="content-paragraph">
+                            Whether you're aiming to improve communication, develop leadership, boost productivity, or achieve emotional wellness, our tailored training and resources are designed to help you thrive both personally and professionally.
+                        </p>
+                    </div>
+                </div>
+                <div class="founder-card slide-right">
+                    <div class="founder-image">
+                        <img src="photos/founder.jpg" alt="Dhanasekar" />
+                    </div>
+                    <h3 class="founder-name"><span class="mr-title">Mr.</span> Dhanasekar</h3>
+                    <p class="founder-title">Founder of</p>
+                    <p class="academy-name">A S GURU ACADEMY</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- about ends -->
+
+    <script src="script.js"></script>
+</body>
+</html>
