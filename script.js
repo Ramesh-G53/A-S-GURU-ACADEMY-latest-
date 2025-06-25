@@ -155,7 +155,7 @@ function initializeSlideshow() {
         }, 100);
         
         // Start automatic slideshow every 4 seconds
-        slideshowInterval = setInterval(showNextSlide, 3000);
+        slideshowInterval = setInterval(showNextSlide, 4000);
     } else {
         console.warn('No slides found for slideshow');
     }
@@ -290,25 +290,55 @@ window.addEventListener('load', function() {
     safeInitializeSlideshow();
 });
 
-// About section - REMOVED AUTOSCROLL FUNCTIONALITY
-// Now only handles slide animations when section comes into view
+// about starts
+
+// About section - Enhanced slide animations with fade in/out functionality
 document.addEventListener('DOMContentLoaded', function() {
     const aboutSection = document.getElementById('About');
     
-    // Intersection Observer for section visibility (only for animations)
+    // Intersection Observer for section visibility
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.3
+        rootMargin: '-20px',
+        threshold: 0.2
     };
     
     const sectionObserver = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
+            const slideElements = entry.target.querySelectorAll('.slide-left, .slide-right');
+            
             if (entry.isIntersecting) {
-                // Only trigger slide animations when section comes into view
-                const slideElements = entry.target.querySelectorAll('.slide-left, .slide-right');
+                // Slide in when section comes into view
                 slideElements.forEach(element => {
-                    element.style.animationPlayState = 'running';
+                    // Remove any slide-out classes and reset
+                    element.classList.remove('slide-out-left', 'slide-out-right');
+                    element.style.animation = 'none';
+                    
+                    // Force reflow
+                    element.offsetHeight;
+                    
+                    // Start slide-in animation
+                    if (element.classList.contains('slide-left')) {
+                        element.style.animation = 'slideInLeft 1s ease-out forwards';
+                    } else if (element.classList.contains('slide-right')) {
+                        element.style.animation = 'slideInRight 1s ease-out forwards';
+                    }
+                });
+            } else {
+                // Slide out when section goes out of view
+                slideElements.forEach(element => {
+                    // Reset any existing animations
+                    element.style.animation = 'none';
+                    
+                    // Force reflow
+                    element.offsetHeight;
+                    
+                    // Start slide-out animation
+                    if (element.classList.contains('slide-left')) {
+                        element.style.animation = 'slideOutLeft 0.8s ease-in forwards';
+                    } else if (element.classList.contains('slide-right')) {
+                        element.style.animation = 'slideOutRight 0.8s ease-in forwards';
+                    }
                 });
             }
         });
@@ -318,4 +348,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (aboutSection) {
         sectionObserver.observe(aboutSection);
     }
+    
+    // Smooth scrolling for scrollable content
+    const scrollableContent = document.getElementById('scrollableContent');
+    if (scrollableContent) {
+        scrollableContent.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            this.scrollTop += e.deltaY;
+        });
+    }
 });
+
+//about ends

@@ -269,7 +269,7 @@ body {
 .hero-logo-circle {
     width: 140px;
     height: 140px;
-    border-radius: 8px;
+    border-radius: 50%;
     background: linear-gradient(135deg, #ff6b35, #f7931e);
     display: flex;
     align-items: center;
@@ -288,7 +288,7 @@ body {
 .hero-logo-img {
     width: 125px;
     height: 125px;
-    border-radius: 4px;
+    border-radius: 50%;
     object-fit: cover;
 }
 
@@ -640,14 +640,14 @@ body {
     .hero-logo-circle {
         width: 80px;
         height: 80px;
-        border-radius: 6px;
+        border-radius: 50%;
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
     .hero-logo-img {
         width: 65px;
         height: 65px;
-        border-radius: 3px;
+        border-radius: 50%;
     }
     
     .hero-text {
@@ -762,13 +762,15 @@ body {
     }
     
     .hero-logo-circle {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
+        margin-left: 10px;
     }
     
     .hero-logo-img {
-        width: 70px;
-        height: 70px;
+        width: 80px;
+        height: 80px;
+        
     }
     
     .hero-welcome {
@@ -800,11 +802,12 @@ body {
 
 /* till hero end */
 
-/* about section start */
+/* About section styles start */
+
 .About {
     background: linear-gradient(135deg, #ff8c00, #ff6b35, #ff4500);
     padding: 80px 20px;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -838,27 +841,10 @@ body {
     border-radius: 15px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     opacity: 0;
     transform: translateY(50px);
-}
-
-.content-card:hover, .founder-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.content-card {
-    flex: 0 0 60%;
-}
-
-.founder-card {
-    flex: 0 0 40%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex: 1; /* Equal width for both cards */
 }
 
 .scrollable-content {
@@ -889,24 +875,33 @@ body {
 .content-paragraph {
     color: #2d5016;
     font-weight: bold;
-    text-align: left; /* Comment out this line to remove text justification: text-align: justify; */
+    text-align: left;
     line-height: 1.8;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 1.1rem;
     padding-right: 10px;
 }
+
 
 .content-paragraph:last-child {
     margin-bottom: 0;
 }
 
+/* Founder card layout - photo left, text right */
+.founder-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    text-align: left;
+}
+
 .founder-image {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     border: 2px solid black;
     overflow: hidden;
-    margin: 0 auto 20px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -920,6 +915,10 @@ body {
     border-radius: 50%;
 }
 
+.founder-info {
+    flex: 1;
+}
+
 .mr-title {
     color: black;
 }
@@ -927,14 +926,14 @@ body {
 .founder-name {
     color: #ff8c00;
     font-weight: bold;
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
 .founder-title {
     color: black;
     font-size: 1.2rem;
-    margin: 0 0 5px 0;
+    /* margin: 0 0 5px 0; */
 }
 
 .academy-name {
@@ -947,10 +946,20 @@ body {
 /* Animation classes */
 .slide-left {
     animation: slideInLeft 1s ease-out forwards;
+    animation-play-state: paused;
 }
 
 .slide-right {
     animation: slideInRight 1s ease-out forwards;
+    animation-play-state: paused;
+}
+
+.slide-out-left {
+    animation: slideOutLeft 0.8s ease-in forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.8s ease-in forwards;
 }
 
 @keyframes slideInLeft {
@@ -975,6 +984,28 @@ body {
     }
 }
 
+@keyframes slideOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100px) translateY(50px);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px) translateY(50px);
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .About {
@@ -996,7 +1027,12 @@ body {
         padding: 25px;
     }
     
+    /* Maintain same layout on mobile - photo left, text right */
     .founder-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: left;
         order: -1;
     }
     
@@ -1006,19 +1042,23 @@ body {
     }
     
     .content-paragraph {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .founder-image {
-        width: 120px;
-        height: 120px;
+        width: 80px;
+        height: 80px;
     }
     
     .founder-name {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
     
     .founder-title {
+        font-size: 1rem;
+    }
+    
+    .academy-name {
         font-size: 1.1rem;
     }
 }
@@ -1036,13 +1076,26 @@ body {
         height: 200px;
     }
     
+    .founder-card {
+        gap: 20px;
+    }
+    
     .founder-image {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     
     .founder-name {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
+    }
+    
+    .founder-title {
+        font-size: 0.8rem;
+    }
+    
+    .academy-name {
+        font-size: 1rem;
     }
 }
+
 /* about ends */
