@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Popup Button -->
+    <div class="popup-button" id="popupButton">
+        <a href="#Events" class="popup-link">
+            <span class="popup-text">Explore our events</span>
+            <div class="shine-effect"></div>
+        </a>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -23,10 +31,10 @@
                         <a href="#About" class="nav-link">About us</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Programs</a>
+                        <a href="#Programs" class="nav-link">Programs</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Events</a>
+                        <a href="#Events" class="nav-link">Events</a>
                     </li>
                 </div>
                 <div class="nav-right">
@@ -39,6 +47,7 @@
                             <span></span>
                         </div>
                         <ul class="dropdown-menu" id="dropdownMenu">
+                            <li><a href="services.html" class="dropdown-item">Services</a></li>
                             <li><a href="#" class="dropdown-item">Videos</a></li>
                             <li><a href="#" class="dropdown-item">Testimonials</a></li>
                             <li><a href="#" class="dropdown-item">Contact Us</a></li>
@@ -50,7 +59,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section Start -->
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
@@ -139,36 +148,82 @@
             </div>
         </div>
     </section>
+    <!-- Hero Section End -->
 
-    <!-- about section start -->
-        <section class="About" id="About">
-            <div class="about-container">
-                <h2 class="about-title">About Us</h2>
-                <div class="about-content">
-                    <div class="content-card slide-left">
-                        <div class="scrollable-content" id="scrollableContent">
-                            <p class="content-paragraph">
-                                At A S GURU Academy, we are dedicated to empowering individuals to unlock their full potential through holistic personal growth. Our mission is to inspire lifelong learning, build confidence, and cultivate essential life skills through structured programs, expert guidance, and a supportive learning environment.
-                            </p>
-                            <p class="content-paragraph">
-                                Whether you're aiming to improve communication, develop leadership, boost productivity, or achieve emotional wellness, our tailored training and resources are designed to help you thrive both personally and professionally.
-                            </p>
-                        </div>
+    <!-- About Section Start -->
+    <section class="About" id="About">
+        <div class="about-container">
+            <h2 class="about-title">About Us</h2>
+            <div class="about-content">
+                <div class="content-card slide-left">
+                    <div class="scrollable-content" id="scrollableContent">
+                        <p class="content-paragraph">
+                            At A S GURU Academy, we are dedicated to empowering individuals to unlock their full potential through holistic personal growth. Our mission is to inspire lifelong learning, build confidence, and cultivate essential life skills through structured programs, expert guidance, and a supportive learning environment.
+                        </p>
+                        <p class="content-paragraph">
+                            Whether you're aiming to improve communication, develop leadership, boost productivity, or achieve emotional wellness, our tailored training and resources are designed to help you thrive both personally and professionally.
+                        </p>
                     </div>
-                    <div class="founder-card slide-right">
-                        <div class="founder-image">
-                            <img src="photos/profile.webp" alt="Dhanasekar" />
-                        </div>
-                        <div class="founder-info">
-                            <h3 class="founder-name"><span class="mr-title">Mr.</span>A.Dhanasekaran</h3>
-                            <p class="founder-title">Founder of</p>
-                            <p class="academy-name">A S GURU ACADEMY</p>
-                        </div>
+                </div>
+                <div class="founder-card slide-right">
+                    <div class="founder-image">
+                        <img src="photos/founder.jpg" alt="Dhanasekar" />
+                    </div>
+                    <div class="founder-info">
+                        <h3 class="founder-name"><span class="mr-title">Mr.</span>A.Dhanasekaran</h3>
+                        <p class="founder-title">Founder of</p>
+                        <p class="academy-name">A S GURU ACADEMY</p>
                     </div>
                 </div>
             </div>
-        </section>
-    <!-- about ends -->
+        </div>
+    </section>
+    <!-- About Section End -->
+
+    <!-- Programs Section Start -->
+    <section class="popular-programs" id="Programs">
+        <div class="programs-container">
+            <div class="programs-header">
+                <h2 class="programs-title">Popular Programs</h2>
+                <a href="services.html" class="view-more-btn">View More</a>
+            </div>
+            
+            <div class="programs-cards">
+                <div class="program-card slide-left" id="programCard1">
+                    <div class="program-image">
+                        <img src="photos/prog1.jpg" alt="Program 1" class="program-img">
+                        <h3 class="program-name" data-en="Art of Speech" data-ta="பேச்சுக் கலை">Art of Speech</h3>
+                    </div>
+                    <div class="program-points-section">
+                        <ul class="program-points">
+                            <li class="program-point" data-en="Political Speech" data-ta="அரசியல் பேச்சு">Political Speech</li>
+                            <li class="program-point" data-en="Spiritual Speech" data-ta="ஆன்மீக பேச்சு">Spiritual Speech</li>
+                            <li class="program-point" data-en="Debate Speech" data-ta="பட்டிமன்ற பேச்சு">Debate Speech</li>
+                            <li class="program-point" data-en="Humorous Speech" data-ta="நகைச்சுவை பேச்சு">Humorous Speech</li>
+                        </ul>
+                    </div>
+                    <div class="card-shine-effect"></div>
+                </div>
+
+                <div class="program-card slide-right" id="programCard2">
+                    <div class="program-image">
+                        <img src="photos/prog2.webp" alt="Program 2" class="program-img">
+                        <h3 class="program-name" data-en="Law of Attraction" data-ta="பிரபஞ்ச ஈர்ப்பு விதி">Law of Attraction</h3>
+                    </div>
+                    <div class="program-points-section">
+                        <ul class="program-points">
+                            <li class="program-point" data-en="Foundational Mindset Shift" data-ta="அடிப்படை மனமாற்றம்">Foundational Mindset Shift</li>
+                            <li class="program-point" data-en="Miracle Morning Routine" data-ta="அற்புதமான காலை நடைமுறை">Miracle Morning Routine</li>
+                            <li class="program-point" data-en="Mind Tuning" data-ta="மனத்தாளமை சீரமைத்தல்">Mind Tuning</li>
+                            <li class="program-point" data-en="Practicing Gratitude" data-ta="நன்றி செலுத்தும் மனநிலை">Practicing Gratitude</li>
+                        </ul>
+                    </div>
+                    <div class="card-shine-effect"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Programs Section End -->
 
     <script src="script.js"></script>
 </body>

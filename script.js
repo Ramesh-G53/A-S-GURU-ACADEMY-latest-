@@ -95,7 +95,7 @@ if (heroLogoCircle) {
     });
 }
 
-// Image Slideshow Functionality
+// Hero Section Start - Image Slideshow Functionality
 let currentSlide = 0;
 let slides = [];
 let totalSlides = 0;
@@ -104,7 +104,6 @@ let slideshowInterval;
 function initializeSlideElements() {
     slides = document.querySelectorAll('.slide-image');
     totalSlides = slides.length;
-    // console.log(`Found ${totalSlides} slides:`, Array.from(slides).map(slide => slide.src));
 }
 
 function showNextSlide() {
@@ -116,8 +115,6 @@ function showNextSlide() {
     
     // Move to next slide (loop back to first if at end)
     currentSlide = (currentSlide + 1) % totalSlides;
-    
-    // console.log(`Showing slide ${currentSlide + 1} of ${totalSlides}`);
     
     // Add active class to new slide and start zoom-out effect
     slides[currentSlide].classList.add('active');
@@ -133,8 +130,6 @@ function initializeSlideshow() {
     initializeSlideElements();
     
     if (totalSlides > 0) {
-        // console.log(`Initializing slideshow with ${totalSlides} slides`);
-        
         // Clear any existing interval
         if (slideshowInterval) {
             clearInterval(slideshowInterval);
@@ -224,75 +219,30 @@ window.addEventListener('resize', function() {
     hamburger.classList.remove('active');
 });
 
-// Page load initialization
-window.addEventListener('load', function() {
-    // Add loaded class to body
-    document.body.classList.add('loaded');
-    
-    // Initialize slideshow
-    initializeSlideshow();
-    
-    // Clear will-change properties after animations complete
-    setTimeout(() => {
-        const animatedElements = document.querySelectorAll('.hero-logo, .hero-text, .hero-description, .hero-slideshow');
-        animatedElements.forEach(el => {
-            el.style.willChange = 'auto';
-        });
-    }, 2000);
-});
+// Popup Button Functionality
+let popupShown = false;
 
-// DOM Content Loaded for immediate setup
-document.addEventListener('DOMContentLoaded', function() {
-    // Ensure smooth scrolling is enabled
-    document.documentElement.style.scrollBehavior = 'smooth';
+function showPopupButton() {
+    if (popupShown) return;
     
-    // Preload critical animations
-    const criticalElements = document.querySelectorAll('.hero-logo, .hero-text, .get-started-btn');
-    criticalElements.forEach(el => {
-        el.style.willChange = 'transform, opacity';
-    });
-});
-
-// Touch event optimization for mobile
-if ('ontouchstart' in window) {
-    // Add touch-specific optimizations
-    document.body.style.webkitTouchCallout = 'none';
-    document.body.style.webkitUserSelect = 'none';
-    
-    // Optimize touch scrolling
-    document.body.style.webkitOverflowScrolling = 'touch';
-}
-
-// Error handling for missing elements
-function safeQuerySelector(selector) {
-    try {
-        return document.querySelector(selector);
-    } catch (error) {
-        console.warn(`Element not found: ${selector}`);
-        return null;
+    const popupButton = document.getElementById('popupButton');
+    if (popupButton) {
+        setTimeout(() => {
+            popupButton.classList.add('show');
+            popupShown = true;
+        }, 1000);
+        
+        
+        // Hide popup after 4 seconds
+        setTimeout(() => {
+            popupButton.classList.remove('show');
+            popupButton.classList.add('hide');
+        }, 5000);
     }
 }
+// Hero Section End
 
-// Enhanced error handling for slideshow
-function safeInitializeSlideshow() {
-    try {
-        const slideContainer = safeQuerySelector('.slideshow-container');
-        if (slideContainer && slides.length > 0) {
-            initializeSlideshow();
-        }
-    } catch (error) {
-        console.warn('Slideshow initialization failed:', error);
-    }
-}
-
-// Replace direct slideshow initialization
-window.addEventListener('load', function() {
-    safeInitializeSlideshow();
-});
-
-// about starts
-
-// About section - Enhanced slide animations with fade in/out functionality
+// About Section Start - Enhanced slide animations with fade in/out functionality
 document.addEventListener('DOMContentLoaded', function() {
     const aboutSection = document.getElementById('About');
     
@@ -358,5 +308,275 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// About Section End
 
-//about ends
+// Programs Section Start - Popular Programs Section Functionality
+let programsAnimated = false;
+let textTranslationIntervals = [];
+
+// Translation data for program cards
+const translations = {
+    'programCard1': {
+        name: { en: 'Art of Speech', ta: 'பேச்சுக் கலை' },
+        points: [
+            { en: 'Political Speech', ta: 'அரசியல் பேச்சு' },
+            { en: 'Spiritual Speech', ta: 'ஆன்மீக பேச்சு' },
+            { en: 'Debate Speech', ta: 'பட்டிமன்ற பேச்சு' },
+            { en: 'Humorous Speech', ta: 'நகைச்சுவை பேச்சு' }
+        ]
+    },
+    'programCard2': {
+        name: { en: 'Law of Attraction', ta: 'பிரபஞ்ச ஈர்ப்பு விதி' },
+        points: [
+            { en: 'Foundational Mindset Shift', ta: 'அடிப்படை மனமாற்றம்' },
+            { en: 'Miracle Morning Routine', ta: 'அற்புதமான காலை நடைமுறை' },
+            { en: 'Mind Tuning', ta: 'மனத்தாளமை சீரமைத்தல்' },
+            { en: 'Practicing Gratitude', ta: 'நன்றி செலுத்தும் மனநிலை' }
+        ]
+    }
+};
+
+function animatePrograms() {
+    if (programsAnimated) return;
+    
+    const programsHeader = document.querySelector('.programs-header');
+    const programCard1 = document.getElementById('programCard1');
+    const programCard2 = document.getElementById('programCard2');
+    
+    if (programsHeader && programCard1 && programCard2) {
+        // Fade in header
+        programsHeader.classList.add('fade-in');
+        
+        // Animate cards with delay
+        setTimeout(() => {
+            programCard1.classList.add('slide-left');
+        }, 500);
+        
+        setTimeout(() => {
+            programCard2.classList.add('slide-right');
+        }, 800);
+        
+        programsAnimated = true;
+        
+        // Start text translation after cards are visible
+        setTimeout(() => {
+            startTextTranslation();
+        }, 1500);
+    }
+}
+
+function startTextTranslation() {
+    Object.keys(translations).forEach(cardId => {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+        
+        const programName = card.querySelector('.program-name');
+        const points = card.querySelectorAll('.program-point');
+        const cardTranslations = translations[cardId];
+        
+        // Handle program name translation with improved timing
+        if (programName && cardTranslations.name) {
+            let isEnglish = true;
+            let isTransitioning = false;
+            
+            const nameInterval = setInterval(() => {
+                if (isTransitioning) return;
+                
+                isTransitioning = true;
+                programName.style.opacity = '0';
+                
+                setTimeout(() => {
+                    if (isEnglish) {
+                        programName.textContent = cardTranslations.name.ta;
+                    } else {
+                        programName.textContent = cardTranslations.name.en;
+                    }
+                    programName.style.opacity = '1';
+                    isEnglish = !isEnglish;
+                    isTransitioning = false;
+                }, 300);
+            }, 3000);
+            
+            textTranslationIntervals.push(nameInterval);
+        }
+        
+        // Handle points translation with improved timing
+        points.forEach((point, index) => {
+            if (cardTranslations.points[index]) {
+                let isEnglish = true;
+                let isTransitioning = false;
+                
+                const interval = setInterval(() => {
+                    if (isTransitioning) return;
+                    
+                    isTransitioning = true;
+                    point.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        if (isEnglish) {
+                            point.textContent = cardTranslations.points[index].ta;
+                        } else {
+                            point.textContent = cardTranslations.points[index].en;
+                        }
+                        point.style.opacity = '1';
+                        isEnglish = !isEnglish;
+                        isTransitioning = false;
+                    }, 300);
+                }, 3000);
+                
+                textTranslationIntervals.push(interval);
+            }
+        });
+    });
+}
+
+function resetLanguageToEnglish() {
+    // Clear all translation intervals
+    textTranslationIntervals.forEach(interval => clearInterval(interval));
+    textTranslationIntervals = [];
+    
+    // Reset all text back to English
+    Object.keys(translations).forEach(cardId => {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+        
+        const programName = card.querySelector('.program-name');
+        const points = card.querySelectorAll('.program-point');
+        const cardTranslations = translations[cardId];
+        
+        // Reset program name to English
+        if (programName && cardTranslations.name) {
+            programName.textContent = cardTranslations.name.en;
+            programName.style.opacity = '1';
+        }
+        
+        // Reset all points to English
+        points.forEach((point, index) => {
+            if (cardTranslations.points[index]) {
+                point.textContent = cardTranslations.points[index].en;
+                point.style.opacity = '1';
+            }
+        });
+    });
+}
+
+// Intersection Observer for Popular Programs section
+const programsObserver = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.target.id === 'Programs') {
+                animatePrograms();
+            } else if (!entry.isIntersecting && entry.target.id === 'Programs') {
+                // Reset language to English when scrolling out
+                resetLanguageToEnglish();
+                
+                // Slide out cards when scrolling away
+                const programCard1 = document.getElementById('programCard1');
+                const programCard2 = document.getElementById('programCard2');
+                
+                if (programCard1 && programCard2) {
+                    programCard1.classList.remove('slide-left');
+                    programCard2.classList.remove('slide-right');
+                    programCard1.classList.add('slide-out-left');
+                    programCard2.classList.add('slide-out-right');
+                    
+                    // Reset animation state
+                    setTimeout(() => {
+                        programsAnimated = false;
+                        programCard1.classList.remove('slide-out-left');
+                        programCard2.classList.remove('slide-out-right');
+                    }, 800);
+                }
+            }
+        });
+    },
+    {
+        root: null,
+        rootMargin: '-20px',
+        threshold: 0.2
+    }
+);
+// Programs Section End
+
+// Page load initialization
+window.addEventListener('load', function() {
+    // Add loaded class to body
+    document.body.classList.add('loaded');
+    
+    // Initialize slideshow
+    initializeSlideshow();
+    
+    // Show popup button after hero elements arrange themselves (2 seconds)
+    setTimeout(() => {
+        showPopupButton();
+    }, 2000);
+    
+    // Start observing Popular Programs section
+    const programsSection = document.getElementById('Programs');
+    if (programsSection) {
+        programsObserver.observe(programsSection);
+    }
+    
+    // Clear will-change properties after animations complete
+    setTimeout(() => {
+        const animatedElements = document.querySelectorAll('.hero-logo, .hero-text, .hero-description, .hero-slideshow');
+        animatedElements.forEach(el => {
+            el.style.willChange = 'auto';
+        });
+    }, 2000);
+});
+
+// DOM Content Loaded for immediate setup
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure smooth scrolling is enabled
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Preload critical animations
+    const criticalElements = document.querySelectorAll('.hero-logo, .hero-text, .get-started-btn');
+    criticalElements.forEach(el => {
+        el.style.willChange = 'transform, opacity';
+    });
+});
+
+// Touch event optimization for mobile
+if ('ontouchstart' in window) {
+    // Add touch-specific optimizations
+    document.body.style.webkitTouchCallout = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    
+    // Optimize touch scrolling
+    document.body.style.webkitOverflowScrolling = 'touch';
+}
+
+// Error handling for missing elements
+function safeQuerySelector(selector) {
+    try {
+        return document.querySelector(selector);
+    } catch (error) {
+        console.warn(`Element not found: ${selector}`);
+        return null;
+    }
+}
+
+// Enhanced error handling for slideshow
+function safeInitializeSlideshow() {
+    try {
+        const slideContainer = safeQuerySelector('.slideshow-container');
+        if (slideContainer && slides.length > 0) {
+            initializeSlideshow();
+        }
+    } catch (error) {
+        console.warn('Slideshow initialization failed:', error);
+    }
+}
+
+// Cleanup function for intervals when page unloads
+window.addEventListener('beforeunload', function() {
+    textTranslationIntervals.forEach(interval => {
+        clearInterval(interval);
+    });
+    
+    if (slideshowInterval) {
+        clearInterval(slideshowInterval);
+    }
+});

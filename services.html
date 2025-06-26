@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Services - AS Guru Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff6347 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.845);
+        }
+
+        .header-title {
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            font-style: italic;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.845);            
+        }
+
+        .go-back-btn {
+            background: white;
+            color: #ff8c00;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.845);
+        }
+
+        .go-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 60px 40px;
+            min-height: calc(100vh - 100px);
+        }
+
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        /* Service Card Design */
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.772);
+            /* border-color: #000000; */
+        }
+
+        /* Service Image */
+        .service-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-img {
+            transform: scale(1.02);
+        }
+
+        /* Service Name positioned on the image */
+        .service-name {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin: 0;
+            z-index: 2;
+            background: rgba(255, 140, 0, 0.9);
+            padding: 8px 12px;
+            border-radius: 6px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Service Points Section */
+        .service-points-section {
+            background: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        .service-points {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .service-point {
+            color: #495057;
+            font-size: 1rem;
+            font-weight: 400;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.3;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .service-point:before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ff8c00;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .service-card:hover .service-point {
+            color: #ff8c00;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .services-section {
+                padding: 40px 20px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .service-image {
+                height: 180px;
+            }
+            
+            .service-name {
+                font-size: 1.2rem;
+                bottom: 12px;
+                left: 12px;
+            }
+            
+            .service-point {
+                font-size: 0.95rem;
+            }
+            
+            .service-points-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-image {
+                height: 160px;
+            }
+            
+            .service-name {
+                font-size: 1rem;
+                bottom: 10px;
+                left: 10px;
+            }
+            
+            .service-point {
+                font-size: 0.9rem;
+            }
+            
+            .service-points-section {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header-title">Our Services</h1>
+        <a href="index.html" class="go-back-btn">Go Back</a>
+    </header>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="services-container">
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s1.jpg" alt="Career & Personal Success" class="service-img">
+                        <h3 class="service-name">Career & Personal Success</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Personal Branding</li>
+                            <li class="service-point">Decision-Making and Problem Solving</li>
+                            <li class="service-point">Leadership Development</li>
+                            <li class="service-point">Financial Literacy for Personal Growth</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s2.jpg" alt="Personal Growth & Mindset" class="service-img">
+                        <h3 class="service-name">Personal Growth & Mindset</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Growth Mindset vs. Fixed Mindset</li>
+                            <li class="service-point">Building Self-Confidence</li>
+                            <li class="service-point">Overcoming Fear and Limiting Beliefs</li>
+                            <li class="service-point">Developing Emotional Intelligence</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s5.jpg" alt="Time & Productivity" class="service-img">
+                        <h3 class="service-name">Time & Productivity</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Time Management Mastery</li>
+                            <li class="service-point">Beating Procrastination</li>
+                            <li class="service-point">Focus and Concentration Techniques</li>
+                            <li class="service-point">Building Daily Success Routines</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s6.jpg" alt="Communication & Relationships" class="service-img">
+                        <h3 class="service-name">Communication & Relationships</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Effective Communication</li>
+                            <li class="service-point">Listening to Understand</li>
+                            <li class="service-point">Conflict Resolution</li>
+                            <li class="service-point">Public Speaking and Presentation Skills</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s8.jpg" alt="Mental & Emotional Wellness" class="service-img">
+                        <h3 class="service-name">Mental & Emotional Wellness</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Stress Management Techniques</li>
+                            <li class="service-point">Coping with Anxiety and Depression</li>
+                            <li class="service-point">Building Resilience</li>
+                            <li class="service-point">The Art of Letting Go and Forgiveness</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="photos/services/s7.jpg" alt="Life Skills & Success Habits" class="service-img">
+                        <h3 class="service-name">Life Skills & Success Habits</h3>
+                    </div>
+                    <div class="service-points-section">
+                        <ul class="service-points">
+                            <li class="service-point">Lifelong Learning and Skill Building</li>
+                            <li class="service-point">Developing a Success Mindset</li>
+                            <li class="service-point">Goal Setting and Vision Mapping</li>
+                            <li class="service-point">Habits of Highly Effective People</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
