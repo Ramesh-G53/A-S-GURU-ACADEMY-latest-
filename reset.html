@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - A S GURU ACADEMY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .reset-container {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: 2px solid #ff6b35;
+            color: #ff6b35;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #ff6b35;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .reset-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .banner-title {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b35 0%, #e55a2b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .reset-button:active {
+            transform: translateY(0);
+        }
+
+        .reset-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            min-height: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .message.error {
+            background: #ffe6e6;
+            color: #e74c3c;
+            border: 1px solid #f5b7b1;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #27ae60;
+            border: 1px solid #a5d6a7;
+        }
+
+        .message.info {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #90caf9;
+        }
+
+        .back-to-login {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-login-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-login-link:hover {
+            color: #e55a2b;
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #ff6b35;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .password-requirements {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b35;
+        }
+
+        .password-requirements h4 {
+            color: #34495e;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .password-requirements ul {
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            margin-bottom: 3px;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .reset-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .banner-title {
+                font-size: 1.6rem;
+            }
+
+            .back-button {
+                padding: 6px 12px;
+                font-size: 12px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .form-input, .reset-button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        /* Tablet styles */
+        @media (min-width: 768px) {
+            .reset-container {
+                padding: 50px 40px;
+            }
+
+            .banner-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <button class="back-button" onclick="window.location.href='login.html'">← Back to Login</button>
+        
+        <div class="reset-header">
+            <h1 class="banner-title">Reset Password</h1>
+            <p class="subtitle">Enter your new password</p>
+        </div>
+
+        <form id="resetForm">
+            <div class="form-group">
+                <label for="password">New Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="form-input" 
+                    placeholder="Enter new password" 
+                    required
+                    minlength="6"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    class="form-input" 
+                    placeholder="Confirm new password" 
+                    required
+                    minlength="6"
+                >
+            </div>
+
+            <div class="password-requirements">
+                <h4>Password Requirements:</h4>
+                <ul>
+                    <li>At least 6 characters long</li>
+                    <li>Must contain letters and numbers</li>
+                    <li>Special characters are recommended</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="reset-button" id="resetBtn">
+                Update Password
+            </button>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Updating your password...</p>
+            </div>
+
+            <div id="message" class="message"></div>
+        </form>
+
+        <div class="back-to-login">
+            <a href="login.html" class="back-to-login-link">
+                ← Back to Login
+            </a>
+        </div>
+    </div>
+
+    <!-- Supabase Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script>
+        // Initialize Supabase client - REPLACE WITH YOUR CREDENTIALS
+        const supabaseUrl = "https://csmiziefiecrtxdmahef.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // DOM Elements
+        const resetForm = document.getElementById('resetForm');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const resetBtn = document.getElementById('resetBtn');
+        const loading = document.getElementById('loading');
+        const messageDiv = document.getElementById('message');
+
+        // Get URL fragments (hash parameters) to check for session
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token');
+        const type = hashParams.get('type');
+
+        // Check if we have the required tokens and correct type
+        if (!accessToken || type !== 'recovery') {
+            showMessage('Invalid or expired reset link. Please request a new password reset.', 'error');
+            resetBtn.disabled = true;
+        }
+
+        // Reset Password Function
+        async function resetPassword() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Validation
+            if (!password || !confirmPassword) {
+                showMessage('Please fill in all fields.', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+
+            // Show loading state
+            showLoading(true);
+            clearMessage();
+
+            try {
+                // Set the session using the tokens from URL
+                if (accessToken && refreshToken) {
+                    await supabaseClient.auth.setSession({
+                        access_token: accessToken,
+                        refresh_token: refreshToken
+                    });
+                }
+
+                // Update the password
+                const { error } = await supabaseClient.auth.updateUser({
+                    password: password
+                });
+
+                if (error) throw error;
+
+                // Success
+                showLoading(false);
+                showMessage('Password updated successfully! Redirecting to login...', 'success');
+                
+                // Sign out the user and redirect to login after a delay
+                setTimeout(async () => {
+                    await supabaseClient.auth.signOut();
+                    window.location.href = 'login.html';
+                }, 2000);
+
+            } catch (error) {
+                showLoading(false);
+                
+                let errorMessage = 'Failed to update password. Please try again.';
+                
+                switch(error.message) {
+                    case 'New password should be different from the old password.':
+                        errorMessage = 'New password must be different from your current password.';
+                        break;
+                    case 'Password should be at least 6 characters.':
+                        errorMessage = 'Password must be at least 6 characters long.';
+                        break;
+                    case 'Invalid session':
+                    case 'No session found':
+                        errorMessage = 'Reset link expired. Please request a new password reset.';
+                        resetBtn.disabled = true;
+                        break;
+                    default:
+                        if (error.message.includes('session')) {
+                            errorMessage = 'Reset session expired. Please request a new password reset.';
+                            resetBtn.disabled = true;
+                        }
+                        break;
+                }
+                
+                showMessage(errorMessage, 'error');
+            }
+        }
+
+        // Helper Functions
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function clearMessage() {
+            messageDiv.textContent = '';
+            messageDiv.className = 'message';
+            messageDiv.style.display = 'none';
+        }
+
+        function showLoading(show) {
+            if (show) {
+                loading.style.display = 'block';
+                resetBtn.style.display = 'none';
+            } else {
+                loading.style.display = 'none';
+                resetBtn.style.display = 'block';
+            }
+        }
+
+        // Event Listeners
+        resetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            resetPassword();
+        });
+
+        // Real-time password confirmation validation
+        confirmPasswordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                confirmPasswordInput.style.borderColor = '#e74c3c';
+                showMessage('Passwords do not match', 'error');
+            } else if (confirmPassword && password === confirmPassword) {
+                confirmPasswordInput.style.borderColor = '#27ae60';
+                clearMessage();
+            } else {
+                confirmPasswordInput.style.borderColor = '#e1e8ed';
+                clearMessage();
+            }
+        });
+
+        // Enter key support
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmPasswordInput.focus();
+            }
+        });
+
+        confirmPasswordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                resetPassword();
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (accessToken && type === 'recovery') {
+                showMessage('Ready to set your new password.', 'info');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -330,8 +330,8 @@ const translations = {
         points: [
             { en: 'Foundational Mindset Shift', ta: 'அடிப்படை மனமாற்றம்' },
             { en: 'Miracle Morning Routine', ta: 'அற்புதமான காலை நடைமுறை' },
-            { en: 'Mind Tuning', ta: 'மனத்தாளமை சீரமைத்தல்' },
-            { en: 'Practicing Gratitude', ta: 'நன்றி செலுத்தும் மனநிலை' }
+            { en: 'Mind Tuning', ta: 'எண்ணங்கள் மறுசீரமைப்பு' },
+            { en: 'Practicing Gratitude', ta: 'நன்றி உணர்தல் பயிற்சி' }
         ]
     }
 };
