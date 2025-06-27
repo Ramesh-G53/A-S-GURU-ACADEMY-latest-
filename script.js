@@ -580,3 +580,299 @@ window.addEventListener('beforeunload', function() {
         clearInterval(slideshowInterval);
     }
 });
+
+// Event Section Starts
+// Initialize Supabase client for events
+const eventsSupabaseUrl = "https://csmiziefiecrtxdmahef.supabase.co";
+const eventsSupabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM";
+const eventsSupabaseClient = supabase.createClient(eventsSupabaseUrl, eventsSupabaseKey);
+
+// Events horizontal scroll functionality
+class EventsHorizontalScroll {
+    constructor() {
+        this.events = [];
+        this.container = null;
+        this.track = null;
+        this.prevBtn = null;
+        this.nextBtn = null;
+        
+        this.init();
+    }
+    
+    async init() {
+        try {
+            await this.loadEvents();
+            this.setupElements();
+            this.renderEvents();
+            this.setupNavigation();
+        } catch (error) {
+            console.error('Failed to initialize events scroll:', error);
+            this.showError();
+        }
+    }
+    
+    async loadEvents() {
+        const { data, error } = await eventsSupabaseClient
+            .from('events')
+            .select('*')
+            .order('start_date', { ascending: true });
+        
+        if (error) throw error;
+        
+        // Sort events by proximity to current date
+        const now = new Date();
+        this.events = (data || []).sort((a, b) => {
+            const dateA = new Date(a.start_date);
+            const dateB = new Date(b.start_date);
+            
+            const relevantDateA = dateA >= now ? dateA : new Date(a.end_date);
+            const relevantDateB = dateB >= now ? dateB : new Date(b.end_date);
+            
+            const diffA = Math.abs(relevantDateA - now);
+            const diffB = Math.abs(relevantDateB - now);
+            
+            return diffA - diffB;
+        });
+    }
+    
+    setupElements() {
+        this.container = document.querySelector('.events-scroll-container');
+        this.track = document.getElementById('eventsScrollTrack');
+        this.eventsSection = document.querySelector('.events-section');
+    }
+    
+    setupNavigation() {
+        this.prevBtn = document.getElementById('eventsPrevBtn');
+        this.nextBtn = document.getElementById('eventsNextBtn');
+        
+        if (this.prevBtn && this.nextBtn) {
+            this.prevBtn.addEventListener('click', () => this.scrollLeft());
+            this.nextBtn.addEventListener('click', () => this.scrollRight());
+            
+            // Update button states on scroll
+            this.container.addEventListener('scroll', () => this.updateNavButtons());
+            
+            // Initial button state
+            setTimeout(() => this.updateNavButtons(), 100);
+        }
+    }
+    
+    scrollLeft() {
+        if (this.container) {
+            this.container.scrollBy({
+                left: -380, // Card width + gap
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    scrollRight() {
+        if (this.container) {
+            this.container.scrollBy({
+                left: 380, // Card width + gap
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    updateNavButtons() {
+        if (!this.container || !this.prevBtn || !this.nextBtn) return;
+        
+        const scrollLeft = this.container.scrollLeft;
+        const scrollWidth = this.container.scrollWidth;
+        const clientWidth = this.container.clientWidth;
+        
+        // Update prev button
+        this.prevBtn.disabled = scrollLeft <= 0;
+        
+        // Update next button
+        this.nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 1);
+    }
+    
+    renderEvents() {
+        if (!this.track) return;
+        
+        if (this.events.length === 0) {
+            this.showNoEvents();
+            return;
+        }
+        
+        // Clear existing content
+        this.track.innerHTML = '';
+        this.track.classList.remove('no-events');
+        this.container.classList.remove('no-events');
+        this.eventsSection.classList.remove('no-events');
+        
+        // Create event cards
+        this.events.forEach((event) => {
+            const card = this.createEventCard(event);
+            this.track.appendChild(card);
+        });
+        
+        // Update navigation buttons after rendering
+        setTimeout(() => this.updateNavButtons(), 100);
+    }
+    
+    createEventCard(event) {
+        const card = document.createElement('div');
+        card.className = 'events-card';
+        
+        const startDate = new Date(event.start_date);
+        const endDate = new Date(event.end_date);
+        const formatDate = (date) => {
+            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+        };
+        
+        const modeText = event.mode === 'online' ? 'Online Event' : 'Offline Event';
+        
+        card.innerHTML = `
+            <div class="events-card-image">
+                <img src="${event.poster_url || '/api/placeholder/350/200'}" 
+                     alt="${event.event_name}" 
+                     onerror="this.src='/api/placeholder/350/200'">
+            </div>
+            <div class="events-card-content">
+                <h3 class="events-card-title">${event.event_name}</h3>
+                <p class="events-card-mode">${modeText}</p>
+                <p class="events-card-dates">From: ${formatDate(startDate)} To: ${formatDate(endDate)}</p>
+                <p class="events-card-location">Location: ${event.location}</p>
+                <div class="events-card-buttons">
+                    <button class="events-card-btn view-poster-btn" onclick="eventsHorizontalScroll.viewPoster('${event.poster_url}', '${event.event_name}')">
+                        <span>View Poster</span>
+                        <div class="shine-effect"></div>
+                    </button>
+                    <a href="${event.registration_link}" target="_blank" class="events-card-btn">
+                        <span>Register</span>
+                        <div class="shine-effect"></div>
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        return card;
+    }
+    
+    showNoEvents() {
+        if (this.track) {
+            this.track.innerHTML = '<div class="events-no-data">No events yet</div>';
+            this.track.classList.add('no-events');
+        }
+        
+        this.container.classList.add('no-events');
+        this.eventsSection.classList.add('no-events');
+        
+        // Hide navigation buttons when no events
+        if (this.prevBtn && this.nextBtn) {
+            this.prevBtn.style.display = 'none';
+            this.nextBtn.style.display = 'none';
+        }
+    }
+    
+    showError() {
+        if (this.track) {
+            this.track.innerHTML = '<div class="events-no-data">Error loading events</div>';
+            this.track.classList.add('no-events');
+        }
+        
+        this.container.classList.add('no-events');
+        this.eventsSection.classList.add('no-events');
+        
+        // Hide navigation buttons on error
+        if (this.prevBtn && this.nextBtn) {
+            this.prevBtn.style.display = 'none';
+            this.nextBtn.style.display = 'none';
+        }
+    }
+    
+    viewPoster(posterUrl, eventName) {
+        if (!posterUrl) return;
+        
+        let modal = document.getElementById('eventsModal');
+        if (!modal) {
+            modal = this.createModal();
+        }
+        
+        const modalImg = document.getElementById('eventsModalImg');
+        modalImg.src = posterUrl;
+        modalImg.alt = eventName;
+        modal.style.display = 'block';
+    }
+    
+    createModal() {
+        const modal = document.createElement('div');
+        modal.id = 'eventsModal';
+        modal.style.cssText = `
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+        `;
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.cssText = `
+            position: relative;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            max-width: 95%;
+            max-height: 95%;
+        `;
+        
+        const modalImg = document.createElement('img');
+        modalImg.id = 'eventsModalImg';
+        modalImg.style.cssText = `
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        `;
+        
+        const closeBtn = document.createElement('span');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: white;
+            font-size: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        `;
+        
+        modalContent.appendChild(modalImg);
+        modal.appendChild(closeBtn);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+        
+        // Event listeners
+        modal.addEventListener('click', () => this.closeModal());
+        closeBtn.addEventListener('click', () => this.closeModal());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeModal();
+        });
+        
+        return modal;
+    }
+    
+    closeModal() {
+        const modal = document.getElementById('eventsModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+}
+
+// Initialize horizontal scroll when DOM is loaded
+let eventsHorizontalScroll;
+
+document.addEventListener('DOMContentLoaded', () => {
+    eventsHorizontalScroll = new EventsHorizontalScroll();
+});
+// Event Section Ends
