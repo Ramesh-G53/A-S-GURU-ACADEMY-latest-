@@ -876,3 +876,114 @@ document.addEventListener('DOMContentLoaded', () => {
     eventsHorizontalScroll = new EventsHorizontalScroll();
 });
 // Event Section Ends
+
+// Videos and Testimonials Sections Start
+class VideosTestimonialsLoader {
+    constructor() {
+        this.videos = [];
+        this.testimonials = [];
+        this.init();
+    }
+    
+    async init() {
+        try {
+            await this.loadVideos();
+            await this.loadTestimonials();
+            this.renderVideos();
+            this.renderTestimonials();
+        } catch (error) {
+            console.error('Failed to initialize videos/testimonials:', error);
+        }
+    }
+    
+    async loadVideos() {
+        try {
+            const { data, error } = await eventsSupabaseClient
+                .from('videos')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(3);
+                
+            if (error) throw error;
+            this.videos = data || [];
+        } catch (error) {
+            console.error('Error loading videos:', error);
+            this.videos = [];
+        }
+    }
+    
+    async loadTestimonials() {
+        try {
+            const { data, error } = await eventsSupabaseClient
+                .from('testimonials')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(3);
+                
+            if (error) throw error;
+            this.testimonials = data || [];
+        } catch (error) {
+            console.error('Error loading testimonials:', error);
+            this.testimonials = [];
+        }
+    }
+    
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+    
+    renderVideos() {
+        const videosCards = document.getElementById('videosCards');
+        if (!videosCards) return;
+        
+        if (this.videos.length === 0) {
+            videosCards.innerHTML = '<div class="no-content">No videos available</div>';
+            return;
+        }
+        
+        videosCards.innerHTML = this.videos.map(video => `
+            <div class="video-card" onclick="window.open('${video.video_link.replace('/embed/', '/watch?v=')}', '_blank')">
+                <div class="video-thumbnail">
+                    <iframe src="${video.video_link}" allowfullscreen></iframe>
+                </div>
+                <div class="video-title-section">
+                    <h3 class="video-title">${video.title}</h3>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    renderTestimonials() {
+        const testimonialsCards = document.getElementById('testimonialsCards');
+        if (!testimonialsCards) return;
+        
+        if (this.testimonials.length === 0) {
+            testimonialsCards.innerHTML = '<div class="no-content">No testimonials available</div>';
+            return;
+        }
+        
+        testimonialsCards.innerHTML = this.testimonials.map(testimonial => `
+            <div class="testimonial-card" onclick="window.open('${testimonial.testimonial_link.replace('/embed/', '/watch?v=')}', '_blank')">
+                <div class="testimonial-thumbnail">
+                    <iframe src="${testimonial.testimonial_link}" allowfullscreen></iframe>
+                </div>
+                <div class="testimonial-content">
+                    <h3 class="testimonial-title">${testimonial.title}</h3>
+                    <p class="testimonial-date">Posted at: ${this.formatDate(testimonial.created_at)}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Initialize videos and testimonials loader when DOM is loaded
+let videosTestimonialsLoader;
+
+document.addEventListener('DOMContentLoaded', () => {
+    videosTestimonialsLoader = new VideosTestimonialsLoader();
+});
+// Videos and Testimonials Sections End

@@ -603,12 +603,68 @@
                     <div id="eventStatus"></div>
                 </div>
 
+                <!-- Videos Management Section Starts -->
+                <div class="events-form">
+                    <h3 class="form-title">Post Videos</h3>
+                    <form id="videosForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="videoTitle">Video Title</label>
+                                <input type="text" id="videoTitle" required maxlength="100" placeholder="Enter video title">
+                            </div>
+                            <div class="form-group">
+                                <label for="videoLink">YouTube Video Link</label>
+                                <input type="url" id="videoLink" required placeholder="https://youtu.be/VIDEO_ID or https://www.youtube.com/watch?v=VIDEO_ID">
+                            </div>
+                        </div>
+                        <button type="submit" class="post-btn" id="postVideoBtn">Post Video</button>
+                    </form>
+                    <div id="videoStatus"></div>
+                </div>
+
+                <div class="events-form">
+                    <h3 class="form-title">Post Testimonials</h3>
+                    <form id="testimonialsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="testimonialTitle">Testimonial Title</label>
+                                <input type="text" id="testimonialTitle" required maxlength="100" placeholder="Enter testimonial title">
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonialLink">YouTube Shorts Link</label>
+                                <input type="url" id="testimonialLink" required placeholder="https://youtube.com/shorts/VIDEO_ID">
+                            </div>
+                        </div>
+                        <button type="submit" class="post-btn" id="postTestimonialBtn">Post Testimonial</button>
+                    </form>
+                    <div id="testimonialStatus"></div>
+                </div>
+                <!-- Videos Management Section Ends -->
+
                 <div class="events-list">
                     <h3 class="section-title">Posted Events</h3>
                     <div class="events-grid" id="eventsGrid">
                         <div class="no-events">Loading events...</div>
                     </div>
                 </div>
+
+                <!-- Posted Videos List Starts -->
+                <div class="events-list">
+                    <h3 class="section-title">Posted Videos</h3>
+                    <div class="events-grid" id="videosGrid">
+                        <div class="no-events">Loading videos...</div>
+                    </div>
+                </div>
+                <!-- Posted Videos List Ends -->
+                
+                <!-- Posted Testimonials List Starts -->
+                <div class="events-list">
+                    <h3 class="section-title">Posted Testimonials</h3>
+                    <div class="events-grid" id="testimonialsGrid">
+                        <div class="no-events">Loading testimonials...</div>
+                    </div>
+                </div>
+                <!-- Posted Testimonials List Ends -->
             </div>
         </div>
 
@@ -706,6 +762,8 @@
             // Setup events functionality
             setupEventsForm();
             await loadEvents();
+            await loadTestimonials();
+            await loadVideos();
             await cleanupExpiredEvents();
         
             // Hide loading overlay
@@ -1058,6 +1116,322 @@
             // Check authentication
             checkAuth();
         });
+            
+            
+        // Videos and Testimonials Management Starts
+        const videosForm = document.getElementById('videosForm');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoLink = document.getElementById('videoLink');
+        const videoStatus = document.getElementById('videoStatus');
+        const videosGrid = document.getElementById('videosGrid');
+        const postVideoBtn = document.getElementById('postVideoBtn');
+            
+        const testimonialsForm = document.getElementById('testimonialsForm');
+        const testimonialTitle = document.getElementById('testimonialTitle');
+        const testimonialLink = document.getElementById('testimonialLink');
+        const testimonialStatus = document.getElementById('testimonialStatus');
+        const testimonialsGrid = document.getElementById('testimonialsGrid');
+        const postTestimonialBtn = document.getElementById('postTestimonialBtn');
+            
+        // YouTube link conversion and validation functions
+        function extractVideoId(url) {
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+                /youtube\.com\/shorts\/([^&\n?#]+)/
+            ];
+
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function isYouTubeShorts(url) {
+            return url.includes('youtube.com/shorts/') || url.includes('youtu.be/shorts/');
+        }
+
+        function isRegularYouTubeVideo(url) {
+            const regularPatterns = [
+                /youtube\.com\/watch\?v=/,
+                /youtu\.be\/(?!shorts)/,
+                /youtube\.com\/embed\/(?!.*shorts)/
+            ];
+
+            return regularPatterns.some(pattern => pattern.test(url)) && !isYouTubeShorts(url);
+        }
+
+        function convertToEmbedLink(url, isShorts = false) {
+            const videoId = extractVideoId(url);
+            if (!videoId) return null;
+
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        // Updated Videos form submission with shorts validation
+        videosForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Check if it's a shorts link
+            if (isYouTubeShorts(videoLink.value)) {
+                showVideoStatus('YouTube Shorts cannot be posted in the Videos section. Please use the Testimonials section for Shorts.', 'error');
+                return;
+            }
+
+            // Check if it's a valid regular YouTube video
+            if (!isRegularYouTubeVideo(videoLink.value)) {
+                showVideoStatus('Invalid YouTube video link. Please use a valid YouTube video URL (not Shorts).', 'error');
+                return;
+            }
+
+            const embedLink = convertToEmbedLink(videoLink.value, false);
+            if (!embedLink) {
+                showVideoStatus('Invalid YouTube video link. Please use a valid YouTube URL.', 'error');
+                return;
+            }
+
+            showLoading();
+            showVideoStatus('Posting video...', '');
+            postVideoBtn.disabled = true;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('videos')
+                    .insert([{
+                        title: videoTitle.value,
+                        video_link: embedLink,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                
+                videosForm.reset();
+                showVideoStatus('Video posted successfully!', 'success');
+                await loadVideos();
+                
+            } catch (error) {
+                console.error('Error posting video:', error);
+                showVideoStatus('Failed to post video: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+                postVideoBtn.disabled = false;
+            }
+        });
+
+        // Updated Testimonials form submission with regular video validation
+        testimonialsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Check if it's a regular YouTube video (not shorts)
+            if (isRegularYouTubeVideo(testimonialLink.value)) {
+                showTestimonialStatus('Regular YouTube videos cannot be posted in the Testimonials section. Please use the Videos section for regular videos.', 'error');
+                return;
+            }
+
+            // Check if it's a valid YouTube Shorts link
+            if (!isYouTubeShorts(testimonialLink.value)) {
+                showTestimonialStatus('Please use a valid YouTube Shorts link (youtube.com/shorts/VIDEO_ID).', 'error');
+                return;
+            }
+
+            const embedLink = convertToEmbedLink(testimonialLink.value, true);
+            if (!embedLink) {
+                showTestimonialStatus('Invalid YouTube Shorts link. Please use a valid YouTube Shorts URL.', 'error');
+                return;
+            }
+
+            showLoading();
+            showTestimonialStatus('Posting testimonial...', '');
+            postTestimonialBtn.disabled = true;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('testimonials')
+                    .insert([{
+                        title: testimonialTitle.value,
+                        testimonial_link: embedLink,
+                        created_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+                
+                testimonialsForm.reset();
+                showTestimonialStatus('Testimonial posted successfully!', 'success');
+                await loadTestimonials();
+                
+            } catch (error) {
+                console.error('Error posting testimonial:', error);
+                showTestimonialStatus('Failed to post testimonial: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+                postTestimonialBtn.disabled = false;
+            }
+        });
+
+        // Load videos
+        async function loadVideos() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('videos')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                renderVideos(data);
+
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                videosGrid.innerHTML = `<div class="no-events">Error loading videos: ${error.message}</div>`;
+            }
+        }
+
+        // Load testimonials
+        async function loadTestimonials() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('testimonials')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                renderTestimonials(data);
+
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                testimonialsGrid.innerHTML = `<div class="no-events">Error loading testimonials: ${error.message}</div>`;
+            }
+        }
+
+        // Render videos
+        function renderVideos(videos) {
+            if (videos.length === 0) {
+                videosGrid.innerHTML = '<div class="no-events">No videos posted yet.</div>';
+                return;
+            }
+
+            videosGrid.innerHTML = videos.map(video => `
+                <div class="event-card">
+                    <div class="event-info">
+                        <div class="event-name">Title: ${video.title}</div>
+                        <div class="event-details"><strong>Posted on:</strong> ${formatEventDate(video.created_at)}</div>
+                        <div class="event-details">
+                            <a href="${video.video_link.replace('/embed/', '/watch?v=')}" target="_blank" style="color: #ff6b35;">
+                                Click to watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                    <div class="event-actions">
+                        <button class="delete-btn" onclick="deleteVideo('${video.id}', '${video.title}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render testimonials
+        function renderTestimonials(testimonials) {
+            if (testimonials.length === 0) {
+                testimonialsGrid.innerHTML = '<div class="no-events">No testimonials posted yet.</div>';
+                return;
+            }
+
+            testimonialsGrid.innerHTML = testimonials.map(testimonial => `
+                <div class="event-card">
+                    <div class="event-info">
+                        <div class="event-name">Title: ${testimonial.title}</div>
+                        <div class="event-details"><strong>Posted on:</strong> ${formatEventDate(testimonial.created_at)}</div>
+                        <div class="event-details">
+                            <a href="${testimonial.testimonial_link.replace('/embed/', '/watch?v=')}" target="_blank" style="color: #ff6b35;">
+                                Click to watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                    <div class="event-actions">
+                        <button class="delete-btn" onclick="deleteTestimonial('${testimonial.id}', '${testimonial.title}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delete video
+        async function deleteVideo(videoId, videoTitle) {
+            if (!confirm(`Are you sure you want to delete the video "${videoTitle}"?`)) {
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const { error } = await supabaseClient
+                    .from('videos')
+                    .delete()
+                    .eq('id', videoId);
+
+                if (error) throw error;
+
+                showVideoStatus('Video deleted successfully!', 'success');
+                await loadVideos();
+
+            } catch (error) {
+                console.error('Error deleting video:', error);
+                showVideoStatus('Failed to delete video: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Delete testimonial
+        async function deleteTestimonial(testimonialId, testimonialTitle) {
+            if (!confirm(`Are you sure you want to delete the testimonial "${testimonialTitle}"?`)) {
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const { error } = await supabaseClient
+                    .from('testimonials')
+                    .delete()
+                    .eq('id', testimonialId);
+
+                if (error) throw error;
+
+                showTestimonialStatus('Testimonial deleted successfully!', 'success');
+                await loadTestimonials();
+
+            } catch (error) {
+                console.error('Error deleting testimonial:', error);
+                showTestimonialStatus('Failed to delete testimonial: ' + error.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Status message functions
+        function showVideoStatus(message, type) {
+            videoStatus.innerHTML = message;
+            videoStatus.className = 'status-message ' + type;
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    videoStatus.innerHTML = '';
+                    videoStatus.className = '';
+                }, 5000);
+            }
+        }
+
+        function showTestimonialStatus(message, type) {
+            testimonialStatus.innerHTML = message;
+            testimonialStatus.className = 'status-message ' + type;
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    testimonialStatus.innerHTML = '';
+                    testimonialStatus.className = '';
+                }, 5000);
+            }
+        }
+        // Videos and Testimonials Management Ends
+        
     </script>
 </body>
 </html>

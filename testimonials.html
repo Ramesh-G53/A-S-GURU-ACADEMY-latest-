@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .page-header {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 50%, #ff4500 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .go-back-btn {
+            background: white;
+            color: black;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .go-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Testimonials Section Styles */
+        .testimonials-section {
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(233, 236, 239, 0.6) 100%);
+            min-height: calc(100vh - 100px);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            height: 200px;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .testimonial-thumbnail {
+            width: 112px;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .testimonial-thumbnail iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .testimonial-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .testimonial-title {
+            color: #2d5016;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .testimonial-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .no-content {
+            text-align: center;
+            color: rgb(0, 0, 0);
+            font-size: 1.2rem;
+            padding: 40px;
+            font-weight: bold;
+            grid-column: 1 / -1;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .go-back-btn {
+                align-self: flex-end;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .testimonials-section {
+                padding: 30px 15px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .testimonial-card {
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+                height: 180px;
+            }
+
+            .testimonial-thumbnail {
+                width: 100px;
+                height: 180px;
+            }
+
+            .testimonial-content {
+                padding: 15px;
+            }
+
+            .testimonial-title {
+                font-size: 1rem;
+            }
+
+            .testimonial-date {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .testimonial-card {
+                max-width: 280px;
+                height: 160px;
+            }
+
+            .testimonial-thumbnail {
+                width: 90px;
+                height: 160px;
+            }
+
+            .testimonial-content {
+                padding: 12px;
+            }
+
+            .testimonial-title {
+                font-size: 0.9rem;
+            }
+
+            .testimonial-date {
+                font-size: 0.75rem;
+            }
+
+            .testimonials-section {
+                padding: 20px 10px;
+            }
+        }
+
+        /* Tablet Styles */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1 class="page-title">Testimonials</h1>
+        <button class="go-back-btn" onclick="goBack()">Go Back</button>
+    </header>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <div class="loading">Loading testimonials...</div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase configuration
+        const eventsSupabaseUrl = "https://csmiziefiecrtxdmahef.supabase.co";
+        const eventsSupabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM";
+        
+        // Wait for Supabase to load
+        let eventsSupabaseClient;
+        
+        function initializeSupabase() {
+            if (typeof window.supabase !== 'undefined') {
+                eventsSupabaseClient = window.supabase.createClient(eventsSupabaseUrl, eventsSupabaseKey);
+                return true;
+            } else if (typeof supabase !== 'undefined') {
+                eventsSupabaseClient = supabase.createClient(eventsSupabaseUrl, eventsSupabaseKey);
+                return true;
+            }
+            return false;
+        }
+
+        class TestimonialsLoader {
+            constructor() {
+                this.testimonials = [];
+                this.init();
+            }
+
+            async init() {
+                try {
+                    await this.loadTestimonials();
+                    this.renderTestimonials();
+                } catch (error) {
+                    console.error('Failed to initialize testimonials:', error);
+                    this.showError();
+                }
+            }
+
+            async loadTestimonials() {
+                try {
+                    const { data, error } = await eventsSupabaseClient
+                        .from('testimonials')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+                    this.testimonials = data || [];
+                } catch (error) {
+                    console.error('Error loading testimonials:', error);
+                    this.testimonials = [];
+                    throw error;
+                }
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+
+            renderTestimonials() {
+                const testimonialsGrid = document.getElementById('testimonialsGrid');
+                if (!testimonialsGrid) return;
+
+                if (this.testimonials.length === 0) {
+                    testimonialsGrid.innerHTML = '<div class="no-content">No testimonials available</div>';
+                    return;
+                }
+
+                testimonialsGrid.innerHTML = this.testimonials.map(testimonial => `
+                    <div class="testimonial-card" onclick="openTestimonial('${testimonial.testimonial_link}')">
+                        <div class="testimonial-thumbnail">
+                            <iframe src="${testimonial.testimonial_link}" allowfullscreen></iframe>
+                        </div>
+                        <div class="testimonial-content">
+                            <h3 class="testimonial-title">${testimonial.title}</h3>
+                            <p class="testimonial-date">Posted at: ${this.formatDate(testimonial.created_at)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            showError() {
+                const testimonialsGrid = document.getElementById('testimonialsGrid');
+                if (testimonialsGrid) {
+                    testimonialsGrid.innerHTML = '<div class="no-content">Error loading testimonials. Please try again later.</div>';
+                }
+            }
+        }
+
+        // Utility functions
+        function openTestimonial(testimonialLink) {
+            if (testimonialLink) {
+                const watchUrl = testimonialLink.replace('/embed/', '/watch?v=');
+                window.open(watchUrl, '_blank');
+            }
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // Fallback if no history
+                window.location.href = '/';
+            }
+        }
+
+        // Initialize testimonials loader when DOM is loaded
+        let testimonialsLoader;
+
+        function waitForSupabase(attempts = 0) {
+            if (attempts > 50) { // Max 5 seconds
+                console.error('Supabase failed to load after 5 seconds');
+                document.getElementById('testimonialsGrid').innerHTML = '<div class="no-content">Failed to load Supabase. Please refresh the page.</div>';
+                return;
+            }
+
+            if (initializeSupabase()) {
+                testimonialsLoader = new TestimonialsLoader();
+            } else {
+                setTimeout(() => waitForSupabase(attempts + 1), 100);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            waitForSupabase();
+        });
+    </script>
+</body>
+</html>
