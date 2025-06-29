@@ -498,6 +498,77 @@ const programsObserver = new IntersectionObserver(
 );
 // Programs Section End
 
+// Fade-in Animation Observer for Events, Videos, and Testimonials
+function initializeFadeInAnimations() {
+    const fadeInObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                const sectionId = entry.target.id;
+                
+                if (entry.isIntersecting) {
+                    // Fade in when section comes into view
+                    if (sectionId === 'Events') {
+                        const eventsHeader = entry.target.querySelector('.events-header');
+                        const eventsContainer = entry.target.querySelector('.events-scroll-container');
+                        
+                        if (eventsHeader) {
+                            eventsHeader.classList.add('fade-in');
+                        }
+                        if (eventsContainer) {
+                            setTimeout(() => {
+                                eventsContainer.classList.add('fade-in');
+                            }, 200);
+                        }
+                    }
+                    
+                    if (sectionId === 'Videos') {
+                        const videosHeader = entry.target.querySelector('.videos-header');
+                        const videosCards = entry.target.querySelector('.videos-cards');
+                        
+                        if (videosHeader) {
+                            videosHeader.classList.add('fade-in');
+                        }
+                        if (videosCards) {
+                            setTimeout(() => {
+                                videosCards.classList.add('fade-in');
+                            }, 200);
+                        }
+                    }
+                    
+                    if (sectionId === 'Testimonials') {
+                        const testimonialsHeader = entry.target.querySelector('.testimonials-header');
+                        const testimonialsCards = entry.target.querySelector('.testimonials-cards');
+                        
+                        if (testimonialsHeader) {
+                            testimonialsHeader.classList.add('fade-in');
+                        }
+                        if (testimonialsCards) {
+                            setTimeout(() => {
+                                testimonialsCards.classList.add('fade-in');
+                            }, 200);
+                        }
+                    }
+                }
+                // Note: No fade-out functionality - elements stay visible once they've been seen
+            });
+        },
+        {
+            root: null,
+            rootMargin: '-50px',
+            threshold: 0.2
+        }
+    );
+
+    // Observe the three sections
+    const sectionsToAnimate = ['Events', 'Videos', 'Testimonials'];
+    sectionsToAnimate.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            fadeInObserver.observe(section);
+        }
+    });
+}
+
 // Page load initialization
 window.addEventListener('load', function() {
     // Add loaded class to body
@@ -516,6 +587,9 @@ window.addEventListener('load', function() {
     if (programsSection) {
         programsObserver.observe(programsSection);
     }
+    
+    // Initialize fade-in animations for Events, Videos, and Testimonials
+    initializeFadeInAnimations();
     
     // Clear will-change properties after animations complete
     setTimeout(() => {
@@ -987,3 +1061,18 @@ document.addEventListener('DOMContentLoaded', () => {
     videosTestimonialsLoader = new VideosTestimonialsLoader();
 });
 // Videos and Testimonials Sections End
+
+/* Maps Section Starts */
+document.addEventListener('DOMContentLoaded', function() {
+    const mapButton = document.getElementById('mapButton');
+    
+    if (mapButton) {
+        mapButton.addEventListener('click', function(e) {
+            // Optional: Add click analytics or custom behavior here
+            // console.log('Map button clicked');
+        });
+    }
+});
+/* Maps Section Ends */
+
+

@@ -458,6 +458,22 @@
             font-size: 1.1rem;
         }
 
+        /* Character count styles */
+        .char-count {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .char-count.warning {
+            color: #ff6b35;
+        }
+
+        .char-count.error {
+            color: #e74c3c;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .admin-container {
@@ -558,7 +574,8 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="eventName">Event Name</label>
-                                <input type="text" id="eventName" required maxlength="100" placeholder="Enter event name">
+                                <input type="text" id="eventName" required maxlength="40" placeholder="Enter event name (max 40 characters)">
+                                <div class="char-count" id="eventNameCount">0/40</div>
                             </div>
                             <div class="form-group">
                                 <label for="eventLocation">Event Location</label>
@@ -610,7 +627,8 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="videoTitle">Video Title</label>
-                                <input type="text" id="videoTitle" required maxlength="100" placeholder="Enter video title">
+                                <input type="text" id="videoTitle" required maxlength="40" placeholder="Enter video title (max 40 characters)">
+                                <div class="char-count" id="videoTitleCount">0/40</div>
                             </div>
                             <div class="form-group">
                                 <label for="videoLink">YouTube Video Link</label>
@@ -628,7 +646,8 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="testimonialTitle">Testimonial Title</label>
-                                <input type="text" id="testimonialTitle" required maxlength="100" placeholder="Enter testimonial title">
+                                <input type="text" id="testimonialTitle" required maxlength="40" placeholder="Enter testimonial title (max 40 characters)">
+                                <div class="char-count" id="testimonialTitleCount">0/40</div>
                             </div>
                             <div class="form-group">
                                 <label for="testimonialLink">YouTube Shorts Link</label>
@@ -700,9 +719,33 @@
         const eventsGrid = document.getElementById('eventsGrid');
         const postEventBtn = document.getElementById('postEventBtn');
         
+        // Character count elements
+        const eventNameCount = document.getElementById('eventNameCount');
+        const videoTitleCount = document.getElementById('videoTitleCount');
+        const testimonialTitleCount = document.getElementById('testimonialTitleCount');
+        
         // Event management variables
         let selectedPoster = null;
         let maxEvents = 5;
+        
+        // Character count functionality
+        function setupCharacterCount(input, counter, maxLength) {
+            function updateCount() {
+                const currentLength = input.value.length;
+                counter.textContent = `${currentLength}/${maxLength}`;
+                
+                if (currentLength > maxLength * 0.9) {
+                    counter.className = 'char-count error';
+                } else if (currentLength > maxLength * 0.8) {
+                    counter.className = 'char-count warning';
+                } else {
+                    counter.className = 'char-count';
+                }
+            }
+            
+            input.addEventListener('input', updateCount);
+            updateCount(); // Initial count
+        }
         
         // Show loading
         function showLoading() {
@@ -772,6 +815,11 @@
         
         // Setup events form
         function setupEventsForm() {
+            // Setup character counters with updated limits
+            setupCharacterCount(eventName, eventNameCount, 40);
+            setupCharacterCount(document.getElementById('videoTitle'), videoTitleCount, 40);
+            setupCharacterCount(document.getElementById('testimonialTitle'), testimonialTitleCount, 40);
+            
             // Poster upload preview
             posterUpload.addEventListener('change', handlePosterUpload);
             
@@ -862,6 +910,7 @@
                 // Clear form
                 eventsForm.reset();
                 removePosterPreview();
+                eventNameCount.textContent = '0/40';
                 
                 showEventStatus('Event posted successfully!', 'success');
                 await loadEvents();
@@ -1206,6 +1255,7 @@
                 if (error) throw error;
                 
                 videosForm.reset();
+                videoTitleCount.textContent = '0/40';
                 showVideoStatus('Video posted successfully!', 'success');
                 await loadVideos();
                 
@@ -1256,6 +1306,7 @@
                 if (error) throw error;
                 
                 testimonialsForm.reset();
+                testimonialTitleCount.textContent = '0/40';
                 showTestimonialStatus('Testimonial posted successfully!', 'success');
                 await loadTestimonials();
                 
