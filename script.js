@@ -125,7 +125,7 @@ function showNextSlide() {
     }, 50);
 }
 
-// Initialize slideshow
+// Initialize slideshow immediately when DOM is ready
 function initializeSlideshow() {
     initializeSlideElements();
     
@@ -143,7 +143,7 @@ function initializeSlideshow() {
             slide.classList.remove('active', 'zoom-out');
         });
         
-        // Set first slide as active and add zoom-out effect
+        // Set first slide as active and add zoom-out effect immediately
         slides[0].classList.add('active');
         setTimeout(() => {
             slides[0].classList.add('zoom-out');
@@ -155,6 +155,23 @@ function initializeSlideshow() {
         console.warn('No slides found for slideshow');
     }
 }
+
+// Start slideshow as soon as DOM content is loaded (much faster than window.load)
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize slideshow immediately
+    initializeSlideshow();
+    
+    // Add loaded class to body for any CSS animations
+    document.body.classList.add('loaded');
+    
+    // Ensure smooth scrolling is enabled
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Show popup button after 1 second (reduced from 2 seconds)
+    setTimeout(() => {
+        showPopupButton();
+    }, 2000);
+});
 
 // Performance optimization: Throttle scroll events
 function throttle(func, delay) {
@@ -193,20 +210,6 @@ const throttledScroll = throttle(function() {
             navbar.style.boxShadow = 'none';
         }
     }
-    
-    // Subtle parallax effects (only when hero is visible and elements exist)
-    if (hero && heroLogo && scrolled < window.innerHeight) {
-        const rate = scrolled * -0.3;
-        // Limit the transform to prevent layout issues
-        if (Math.abs(rate) < 200) {
-            // hero.style.transform = `translateY(${rate}px)`;
-        }
-        
-        const logoRate = scrolled * -0.1;
-        if (Math.abs(logoRate) < 100) {
-            // heroLogo.style.transform = `translateY(${logoRate}px) scale(1)`;
-        }
-    }
 }, 16); // ~60fps
 
 // Apply throttled scroll listener
@@ -230,17 +233,15 @@ function showPopupButton() {
         setTimeout(() => {
             popupButton.classList.add('show');
             popupShown = true;
-        }, 1000);
-        
+        }, 500); // Reduced delay
         
         // Hide popup after 4 seconds
         setTimeout(() => {
             popupButton.classList.remove('show');
             popupButton.classList.add('hide');
-        }, 5000);
+        }, 4500);
     }
 }
-// Hero Section End
 
 // About Section Start - Enhanced slide animations with fade in/out functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -308,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-// About Section End
 
 // Programs Section Start - Popular Programs Section Functionality
 let programsAnimated = false;
@@ -496,7 +496,6 @@ const programsObserver = new IntersectionObserver(
         threshold: 0.2
     }
 );
-// Programs Section End
 
 // Fade-in Animation Observer for Events, Videos, and Testimonials
 function initializeFadeInAnimations() {
@@ -549,7 +548,6 @@ function initializeFadeInAnimations() {
                         }
                     }
                 }
-                // Note: No fade-out functionality - elements stay visible once they've been seen
             });
         },
         {
@@ -569,19 +567,8 @@ function initializeFadeInAnimations() {
     });
 }
 
-// Page load initialization
-window.addEventListener('load', function() {
-    // Add loaded class to body
-    document.body.classList.add('loaded');
-    
-    // Initialize slideshow
-    initializeSlideshow();
-    
-    // Show popup button after hero elements arrange themselves (2 seconds)
-    setTimeout(() => {
-        showPopupButton();
-    }, 2000);
-    
+// Initialize everything when DOM is ready (moved from window.load for faster execution)
+document.addEventListener('DOMContentLoaded', function() {
     // Start observing Popular Programs section
     const programsSection = document.getElementById('Programs');
     if (programsSection) {
@@ -590,26 +577,17 @@ window.addEventListener('load', function() {
     
     // Initialize fade-in animations for Events, Videos, and Testimonials
     initializeFadeInAnimations();
-    
+});
+
+// Keep window.load only for non-critical operations that need all resources loaded
+window.addEventListener('load', function() {
     // Clear will-change properties after animations complete
     setTimeout(() => {
         const animatedElements = document.querySelectorAll('.hero-logo, .hero-text, .hero-description, .hero-slideshow');
         animatedElements.forEach(el => {
             el.style.willChange = 'auto';
         });
-    }, 2000);
-});
-
-// DOM Content Loaded for immediate setup
-document.addEventListener('DOMContentLoaded', function() {
-    // Ensure smooth scrolling is enabled
-    document.documentElement.style.scrollBehavior = 'smooth';
-    
-    // Preload critical animations
-    const criticalElements = document.querySelectorAll('.hero-logo, .hero-text, .get-started-btn');
-    criticalElements.forEach(el => {
-        el.style.willChange = 'transform, opacity';
-    });
+    }, 1000); // Reduced from 2000ms
 });
 
 // Touch event optimization for mobile
@@ -655,11 +633,20 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
-// Event Section Starts
+// Event Section Starts - Initialize asynchronously to not block main thread
 // Initialize Supabase client for events
 const eventsSupabaseUrl = "https://csmiziefiecrtxdmahef.supabase.co";
 const eventsSupabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM";
-const eventsSupabaseClient = supabase.createClient(eventsSupabaseUrl, eventsSupabaseKey);
+
+// Only initialize Supabase after critical content is loaded
+let eventsSupabaseClient;
+
+// Delay Supabase initialization to not block critical rendering
+setTimeout(() => {
+    if (typeof supabase !== 'undefined') {
+        eventsSupabaseClient = supabase.createClient(eventsSupabaseUrl, eventsSupabaseKey);
+    }
+}, 100);
 
 // Events horizontal scroll functionality
 class EventsHorizontalScroll {
@@ -670,7 +657,8 @@ class EventsHorizontalScroll {
         this.prevBtn = null;
         this.nextBtn = null;
         
-        this.init();
+        // Initialize with delay to not block main thread
+        setTimeout(() => this.init(), 500);
     }
     
     async init() {
@@ -686,6 +674,10 @@ class EventsHorizontalScroll {
     }
     
     async loadEvents() {
+        if (!eventsSupabaseClient) {
+            throw new Error('Supabase client not initialized');
+        }
+        
         const { data, error } = await eventsSupabaseClient
             .from('events')
             .select('*')
@@ -803,7 +795,8 @@ class EventsHorizontalScroll {
             <div class="events-card-image">
                 <img src="${event.poster_url || '/api/placeholder/350/200'}" 
                      alt="${event.event_name}" 
-                     onerror="this.src='/api/placeholder/350/200'">
+                     onerror="this.src='/api/placeholder/350/200'"
+                     loading="lazy">
             </div>
             <div class="events-card-content">
                 <h3 class="events-card-title">${event.event_name}</h3>
@@ -943,20 +936,24 @@ class EventsHorizontalScroll {
     }
 }
 
-// Initialize horizontal scroll when DOM is loaded
+// Initialize horizontal scroll when DOM is loaded (with delay)
 let eventsHorizontalScroll;
 
 document.addEventListener('DOMContentLoaded', () => {
-    eventsHorizontalScroll = new EventsHorizontalScroll();
+    // Delay events initialization to not block main thread
+    setTimeout(() => {
+        eventsHorizontalScroll = new EventsHorizontalScroll();
+    }, 1000);
 });
-// Event Section Ends
 
 // Videos and Testimonials Sections Start
 class VideosTestimonialsLoader {
     constructor() {
         this.videos = [];
         this.testimonials = [];
-        this.init();
+        
+        // Initialize with delay to not block main thread
+        setTimeout(() => this.init(), 1500);
     }
     
     async init() {
@@ -972,6 +969,10 @@ class VideosTestimonialsLoader {
     
     async loadVideos() {
         try {
+            if (!eventsSupabaseClient) {
+                throw new Error('Supabase client not initialized');
+            }
+            
             const { data, error } = await eventsSupabaseClient
                 .from('videos')
                 .select('*')
@@ -988,6 +989,10 @@ class VideosTestimonialsLoader {
     
     async loadTestimonials() {
         try {
+            if (!eventsSupabaseClient) {
+                throw new Error('Supabase client not initialized');
+            }
+            
             const { data, error } = await eventsSupabaseClient
                 .from('testimonials')
                 .select('*')
@@ -1022,7 +1027,7 @@ class VideosTestimonialsLoader {
         videosCards.innerHTML = this.videos.map(video => `
             <div class="video-card" onclick="window.open('${video.video_link.replace('/embed/', '/watch?v=')}', '_blank')">
                 <div class="video-thumbnail">
-                    <iframe src="${video.video_link}" allowfullscreen></iframe>
+                    <iframe src="${video.video_link}" allowfullscreen loading="lazy"></iframe>
                 </div>
                 <div class="video-title-section">
                     <h3 class="video-title">${video.title}</h3>
@@ -1043,7 +1048,7 @@ class VideosTestimonialsLoader {
         testimonialsCards.innerHTML = this.testimonials.map(testimonial => `
             <div class="testimonial-card" onclick="window.open('${testimonial.testimonial_link.replace('/embed/', '/watch?v=')}', '_blank')">
                 <div class="testimonial-thumbnail">
-                    <iframe src="${testimonial.testimonial_link}" allowfullscreen></iframe>
+                    <iframe src="${testimonial.testimonial_link}" allowfullscreen loading="lazy"></iframe>
                 </div>
                 <div class="testimonial-content">
                     <h3 class="testimonial-title">${testimonial.title}</h3>
@@ -1054,13 +1059,15 @@ class VideosTestimonialsLoader {
     }
 }
 
-// Initialize videos and testimonials loader when DOM is loaded
+// Initialize videos and testimonials loader when DOM is loaded (with delay)
 let videosTestimonialsLoader;
 
 document.addEventListener('DOMContentLoaded', () => {
-    videosTestimonialsLoader = new VideosTestimonialsLoader();
+    // Delay videos/testimonials initialization to not block main thread
+    setTimeout(() => {
+        videosTestimonialsLoader = new VideosTestimonialsLoader();
+    }, 2000);
 });
-// Videos and Testimonials Sections End
 
 /* Maps Section Starts */
 document.addEventListener('DOMContentLoaded', function() {
@@ -1074,5 +1081,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 /* Maps Section Ends */
-
-
