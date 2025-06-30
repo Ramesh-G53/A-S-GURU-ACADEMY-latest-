@@ -2377,6 +2377,12 @@ body {
 }
 /* Testimonials Section Ends */
 
+.blue {
+    height: 5px;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+}
+
 /* Maps Section Starts */
 .map-section {
     position: relative;
@@ -2514,119 +2520,6 @@ body {
     }
 }
 /* Maps Section Ends */
-
-/* Contact Us Section Starts */
-.contact-section {
-    background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(233, 236, 239, 0.6) 100%);
-    padding: 60px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.contact-container {
-    max-width: 1200px;
-    width: 100%;
-    text-align: center;
-}
-
-.contact-title {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 30px;
-    position: relative;
-    display: inline-block;
-}
-
-.contact-title::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 4px;
-    background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 50%, #ff4500 100%);
-    border-radius: 2px;
-}
-
-.contact-subtitle {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #2d5a3d;
-    margin-bottom: 40px;
-    line-height: 1.4;
-}
-
-.form-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-}
-
-.contact-form {
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    border: none;
-    background: white;
-    width: 100%;
-    height: 40vh;
-    max-width: none;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 480px) {
-    .contact-section {
-        padding: 40px 15px;
-    }
-    
-    .contact-title {
-        font-size: 2rem;
-    }
-    
-    .contact-subtitle {
-        font-size: 1rem;
-        margin-bottom: 30px;
-    }
-    
-    .contact-form {
-        width: 100%;
-        height: 70vh;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    .contact-title {
-        font-size: 2.5rem;
-    }
-    
-    .contact-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    .contact-form {
-        width: 100%;
-        height: 70vh;
-    }
-}
-
-@media (min-width: 769px) {
-    .contact-form {
-        width: 100%;
-        height: 70vh;
-    }
-}
-/* Contact Us Section Ends */
 
 /* Footer Section */
 .footer {
