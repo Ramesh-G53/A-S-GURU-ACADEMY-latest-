@@ -1081,3 +1081,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 /* Maps Section Ends */
+
+// WhatsApp button pulsing effect
+document.addEventListener('DOMContentLoaded', function() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    // Add subtle pulse animation
+    function addPulseEffect() {
+        whatsappButton.classList.add('pulse-effect');
+        setTimeout(() => {
+            whatsappButton.classList.remove('pulse-effect');
+        }, 1000);
+    }
+    
+    // Pulse effect every 5 seconds
+    setInterval(addPulseEffect, 5000);
+    
+    // Initial pulse after 2 seconds
+    setTimeout(addPulseEffect, 2000);
+});
+// whatsapp ends
