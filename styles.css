@@ -2916,39 +2916,17 @@ body {
     transform: rotateY(0deg);
 }
 
-/* Card Background Overlay for PNG - Different for each card */
-.card-bg-overlay {
+/* Card Background Image */
+.card-bg-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
     z-index: 1;
     pointer-events: none;
 }
-
-.card-silver .card-bg-overlay {
-    background-image: url('/photos/icons/silver.jpg');
-}
-
-.card-gold .card-bg-overlay {
-    background-image: url('/photos/bgs/gold.jpg');
-}
-
-.card-diamond .card-bg-overlay {
-    background-image: url('/photos/bgs/diamond.jpg');
-}
-
-.card-emerald .card-bg-overlay {
-    background-image: url('/photos/bgs/emarald.jpg');
-}
-
-.card-vip .card-bg-overlay {
-    background-image: url('/photos/bgs/vip.jpg');
-}
-
 
 /* Card Colors with Lively Glowing Effects */
 .card-silver {
@@ -3250,6 +3228,7 @@ body {
 .card-diamond .valid-from,
 .card-diamond .valid-till {
     color: #fff !important;
+    font-weight: bold;
 }
 
 .card-emerald .holder-name,
@@ -3265,7 +3244,7 @@ body {
 .card-vip .discount,
 .card-vip .valid-from,
 .card-vip .valid-till {
-    color: rgb(177, 150, 0) !important;
+    color: #fff !important;
     font-weight: 900 !important;
 }
 
