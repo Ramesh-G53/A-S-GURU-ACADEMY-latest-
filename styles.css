@@ -2916,18 +2916,37 @@ body {
     transform: rotateY(0deg);
 }
 
-/* Card Background Overlay for PNG */
+/* Card Background Overlay for PNG - Different for each card */
 .card-bg-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/photos/bgs/bg.png');
     background-size: cover;
     background-position: center;
     z-index: 1;
     pointer-events: none;
+}
+
+.card-silver .card-bg-overlay {
+    background-image: url('/photos/bgs/bg.png');
+}
+
+.card-gold .card-bg-overlay {
+    background-image: url('/photos/bgs/bg.png');
+}
+
+.card-diamond .card-bg-overlay {
+    background-image: url('/photos/bgs/bg.png');
+}
+
+.card-emerald .card-bg-overlay {
+    background-image: url('/photos/bgs/bg.png');
+}
+
+.card-vip .card-bg-overlay {
+    background-image: url('/photos/bgs/bg.png');
 }
 
 /* Card Colors with Lively Glowing Effects */
@@ -3095,10 +3114,30 @@ body {
     z-index: 2;
 }
 
+/* Progressive font sizes for card titles */
+.card-silver .card-type {
+    font-size: 12px;
+}
+
+.card-gold .card-type {
+    font-size: 13px;
+}
+
+.card-diamond .card-type {
+    font-size: 14px;
+}
+
+.card-emerald .card-type {
+    font-size: 15px;
+}
+
+.card-vip .card-type {
+    font-size: 16px;
+}
+
 .card-type {
     color: #fff;
     font-weight: 800;
-    font-size: 14px;
     letter-spacing: 0.5px;
 }
 
@@ -3168,13 +3207,6 @@ body {
     margin: 0;
 }
 
-.card-id {
-    color: #000;
-    font-weight: 700;
-    font-size: 16px; /* Increased size */
-    margin: 0;
-}
-
 .location {
     color: #000;
     font-weight: 700;
@@ -3189,20 +3221,30 @@ body {
     margin: 0;
 }
 
-/* Card Footer */
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px 15px;
-    position: relative;
-    z-index: 2;
+.validity-dates {
+    margin-top: 5px;
 }
 
 .valid-from, .valid-till {
     color: #000;
     font-weight: 700;
     font-size: 12px;
+    margin: 2px 0;
+}
+
+/* Card ID Box - Bottom Right */
+.card-id-box {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: #fff;
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    z-index: 3;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Continuous Shine Effect */
@@ -3216,7 +3258,7 @@ body {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     z-index: 3;
     pointer-events: none;
-    animation: continuousShine 2s linear infinite;
+    animation: continuousShine 1s linear infinite;
 }
 
 @keyframes continuousShine {
@@ -3442,8 +3484,25 @@ body {
         padding: 0 12px;
     }
 
-    .card-type {
+    /* Mobile progressive font sizes */
+    .card-silver .card-type {
+        font-size: 9px;
+    }
+
+    .card-gold .card-type {
+        font-size: 10px;
+    }
+
+    .card-diamond .card-type {
         font-size: 11px;
+    }
+
+    .card-emerald .card-type {
+        font-size: 12px;
+    }
+
+    .card-vip .card-type {
+        font-size: 13px;
     }
 
     .person-circle, .logo-circle {
@@ -3469,15 +3528,18 @@ body {
         font-size: 15px; /* Increased mobile size */
     }
 
-    .card-id, .location, .discount {
+    .location, .discount {
         font-size: 13px; /* Increased mobile size */
     }
 
-    .card-footer {
-        padding: 0 12px 12px;
+    .valid-from, .valid-till {
+        font-size: 10px;
     }
 
-    .valid-from, .valid-till {
+    .card-id-box {
+        bottom: 10px;
+        right: 10px;
+        padding: 4px 8px;
         font-size: 10px;
     }
 
@@ -3531,8 +3593,25 @@ body {
         padding: 0 10px;
     }
 
-    .card-type {
+    /* Small mobile progressive font sizes */
+    .card-silver .card-type {
+        font-size: 8px;
+    }
+
+    .card-gold .card-type {
+        font-size: 9px;
+    }
+
+    .card-diamond .card-type {
         font-size: 10px;
+    }
+
+    .card-emerald .card-type {
+        font-size: 11px;
+    }
+
+    .card-vip .card-type {
+        font-size: 12px;
     }
 
     .person-circle, .logo-circle {
@@ -3558,15 +3637,18 @@ body {
         font-size: 14px; /* Increased small mobile size */
     }
 
-    .card-id, .location, .discount {
+    .location, .discount {
         font-size: 12px; /* Increased small mobile size */
     }
 
-    .card-footer {
-        padding: 0 10px 10px;
+    .valid-from, .valid-till {
+        font-size: 9px;
     }
 
-    .valid-from, .valid-till {
+    .card-id-box {
+        bottom: 8px;
+        right: 8px;
+        padding: 3px 6px;
         font-size: 9px;
     }
 }
