@@ -1101,3 +1101,177 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(addPulseEffect, 2000);
 });
 // whatsapp ends
+
+// Membership Card Functionality
+class MembershipCard {
+    constructor() {
+        this.cards = document.querySelectorAll('.membership-card');
+        this.buttons = document.querySelectorAll('.card-button');
+        this.cardDetails = document.getElementById('cardDetails');
+        this.cardTitle = document.getElementById('cardTitle');
+        this.cardPrice = document.getElementById('cardPrice');
+        this.cardDiscount = document.getElementById('cardDiscount');
+        
+        this.cardData = {
+            silver: {
+                title: 'Silver Club Card',
+                price: 'Rs 300',
+                discount: '10%'
+            },
+            gold: {
+                title: 'Gold Club Card',
+                price: 'Rs 500',
+                discount: '15%'
+            },
+            diamond: {
+                title: 'Diamond Club Card',
+                price: 'Rs 750',
+                discount: '20%'
+            },
+            emerald: {
+                title: 'Emerald Club Card',
+                price: 'Rs 999',
+                discount: '30%'
+            },
+            vip: {
+                title: 'VIP Club Card',
+                price: 'Rs 1999',
+                discount: '50%'
+            }
+        };
+        
+        this.currentIndex = 0;
+        this.cardOrder = ['silver', 'gold', 'diamond', 'emerald', 'vip'];
+        this.autoSwitchInterval = null;
+        this.inactivityTimer = null;
+        this.isAutoSwitching = true;
+        this.isAnimating = false;
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupEventListeners();
+        this.startAutoSwitch();
+        this.updateCardDetails('silver');
+    }
+    
+    setupEventListeners() {
+        this.buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (this.isAnimating) return;
+                
+                const cardType = e.target.dataset.card;
+                this.switchToCard(cardType);
+                this.resetInactivityTimer();
+            });
+        });
+    }
+    
+    switchToCard(cardType) {
+        if (this.isAnimating) return;
+        
+        // Stop auto-switching temporarily
+        this.stopAutoSwitch();
+        this.isAutoSwitching = false;
+        this.isAnimating = true;
+        
+        // Start flip and shine sequence
+        this.flipAndShineCard(cardType);
+        
+        // Update current index
+        this.currentIndex = this.cardOrder.indexOf(cardType);
+    }
+    
+    flipAndShineCard(cardType) {
+        // Remove active class from all cards (flip out)
+        this.cards.forEach(card => {
+            card.classList.remove('active');
+            card.classList.remove('shine');
+        });
+        
+        // Wait for flip out animation
+        setTimeout(() => {
+            // Add active class to selected card (flip in)
+            const selectedCard = document.querySelector(`[data-card="${cardType}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('active');
+                
+                // Add shine effect after flip in
+                setTimeout(() => {
+                    selectedCard.classList.add('shine');
+                    
+                    // Remove shine effect after animation
+                    setTimeout(() => {
+                        selectedCard.classList.remove('shine');
+                        this.isAnimating = false;
+                    }, 600);
+                }, 300);
+            }
+        }, 300);
+        
+        // Update card details with crossfade effect
+        this.updateCardDetails(cardType);
+    }
+    
+    updateCardDetails(cardType) {
+        const data = this.cardData[cardType];
+        
+        // Fade out current details
+        this.cardDetails.classList.remove('active');
+        
+        setTimeout(() => {
+            // Update content
+            this.cardTitle.textContent = data.title;
+            this.cardPrice.textContent = `Price: ${data.price}`;
+            this.cardDiscount.textContent = `Discount Offered: ${data.discount}`;
+            
+            // Fade in new details
+            this.cardDetails.classList.add('active');
+        }, 300);
+    }
+    
+    startAutoSwitch() {
+        this.autoSwitchInterval = setInterval(() => {
+            if (this.isAutoSwitching && !this.isAnimating) {
+                this.nextCard();
+            }
+        }, 4000); // Changed to 4 seconds
+    }
+    
+    stopAutoSwitch() {
+        if (this.autoSwitchInterval) {
+            clearInterval(this.autoSwitchInterval);
+            this.autoSwitchInterval = null;
+        }
+    }
+    
+    nextCard() {
+        if (this.isAnimating) return;
+        
+        this.currentIndex = (this.currentIndex + 1) % this.cardOrder.length;
+        const nextCardType = this.cardOrder[this.currentIndex];
+        
+        this.isAnimating = true;
+        this.flipAndShineCard(nextCardType);
+    }
+    
+    resetInactivityTimer() {
+        // Clear existing timer
+        if (this.inactivityTimer) {
+            clearTimeout(this.inactivityTimer);
+        }
+        
+        // Start new inactivity timer
+        this.inactivityTimer = setTimeout(() => {
+            this.isAutoSwitching = true;
+            this.startAutoSwitch();
+        }, 5000);
+    }
+}
+
+// Initialize membership card when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new MembershipCard();
+});
+// membership ends
