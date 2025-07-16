@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Membership - A S Guru Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .go-back-btn {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .go-back-btn:hover {
+            background: linear-gradient(135deg, #555 0%, #777 100%);
+            transform: translateY(-2px);
+        }
+
+        .page-title {
+            color: #c0c0c0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+            line-height: 1.2;
+        }
+
+        .intro-text {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .card-view-section, .notify-section {
+            background: #111;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card-view-text, .notify-text {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .view-card-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c00 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .notify-btn {
+            background: linear-gradient(135deg, #25d366 0%, #1da851 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .application-form {
+            background: #111;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        .form-title {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #222;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-select option {
+            background: #222;
+            color: #fff;
+        }
+
+        .form-select option[value="silver"] {
+            color: #c0c0c0;
+        }
+
+        .form-select option[value="gold"] {
+            color: #ffd700;
+        }
+
+        .form-select option[value="diamond"] {
+            color: #66d9ef;
+        }
+
+        .form-select option[value="emerald"] {
+            color: #50c878;
+        }
+
+        .form-select option[value="vip"] {
+            color: #8b00ff;
+        }
+
+        .card-details {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 2px solid #333;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card-details.silver {
+            border-color: #c0c0c0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .card-details.gold {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2620 100%);
+        }
+
+        .card-details.diamond {
+            border-color: #66d9ef;
+            background: linear-gradient(135deg, #1a1a1a 0%, #1a242a 100%);
+        }
+
+        .card-details.emerald {
+            border-color: #50c878;
+            background: linear-gradient(135deg, #1a1a1a 0%, #1a2a1f 100%);
+        }
+
+        .card-details.vip {
+            border-color: #8b00ff;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a1a2a 100%);
+        }
+
+        .card-details h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .card-details.silver h4 {
+            color: #c0c0c0;
+        }
+
+        .card-details.gold h4 {
+            color: #ffd700;
+        }
+
+        .card-details.diamond h4 {
+            color: #66d9ef;
+        }
+
+        .card-details.emerald h4 {
+            color: #50c878;
+        }
+
+        .card-details.vip h4 {
+            color: #8b00ff;
+        }
+
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card-info-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .card-info-item .label {
+            color: #aaa;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .card-info-item .value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .card-info-item .value.price {
+            color: #ff6b35;
+        }
+
+        .card-info-item .value.discount {
+            color: #25d366;
+        }
+
+        .card-info-item .value.validity {
+            color: #66d9ef;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #222;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .file-input::-webkit-file-upload-button {
+            background: #ff6b35;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .image-preview-container {
+            position: relative;
+            display: none;
+            margin-top: 15px;
+            max-width: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .image-remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 68, 68, 0.9);
+            color: #fff;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .image-remove-btn:hover {
+            background: rgba(255, 68, 68, 1);
+            transform: scale(1.1);
+        }
+
+        .apply-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c00 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .apply-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #1a5f1a;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .inform-btn {
+            background: #25d366;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inform-btn:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.2rem;
+                margin-bottom: 30px;
+            }
+
+            .intro-text {
+                font-size: 1rem;
+            }
+
+            .card-view-section, .notify-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .application-form {
+                padding: 20px;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .card-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .card-info-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .card-info-item .label {
+                text-align: left;
+                margin-bottom: 0;
+            }
+
+            .card-info-item .value {
+                text-align: right;
+            }
+
+            .image-preview-container {
+                max-width: 150px;
+            }
+
+            .image-preview {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .application-form {
+                padding: 15px;
+            }
+
+            .image-preview-container {
+                max-width: 120px;
+            }
+
+            .image-preview {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="go-back-btn">← Go Back</a>
+        
+        <h2 class="page-title">
+            A S Guru Academy Membership<br>
+            Digital Card
+        </h2>
+
+        <p class="intro-text">
+            Apply from the variety of digital membership cards we provide to redeem specific membership discounts on all courses provided by the academy for a period of 6 months!
+        </p>
+
+        <div class="card-view-section">
+            <span class="card-view-text">Already have a card?! View it here:</span>
+            <a href="#" class="view-card-btn">View My Card</a>
+        </div>
+
+        <div class="notify-section">
+            <span class="notify-text">If you are waiting for approval, Click here to Notify us.</span>
+            <a href="https://wa.me/919360385965?text=I%20have%20applied%20for%20membership%20and%20waiting%20for%20approval.%20Please%20verify." class="notify-btn" target="_blank">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                </svg>
+                Notify
+            </a>
+        </div>
+
+        <div class="application-form">
+            <h3 class="form-title">Application Form</h3>
+            
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label class="form-label" for="cardType">Select Card Type *</label>
+                    <select class="form-select" id="cardType" name="cardType" required>
+                        <option value="">Choose a card type</option>
+                        <option value="silver">Silver Club Card</option>
+                        <option value="gold">Gold Club Card</option>
+                        <option value="diamond">Diamond Club Card</option>
+                        <option value="emerald">Emerald Club Card</option>
+                        <option value="vip">VIP Club Card</option>
+                    </select>
+                    
+                    <div class="card-details silver" id="silverDetails">
+                        <h4>Silver Club Card</h4>
+                        <div class="card-info">
+                            <div class="card-info-item">
+                                <div class="label">Price</div>
+                                <div class="value price">Rs. 300</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Discount</div>
+                                <div class="value discount">10%</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Validity</div>
+                                <div class="value validity">6 Months</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-details gold" id="goldDetails">
+                        <h4>Gold Club Card</h4>
+                        <div class="card-info">
+                            <div class="card-info-item">
+                                <div class="label">Price</div>
+                                <div class="value price">Rs. 500</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Discount</div>
+                                <div class="value discount">15%</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Validity</div>
+                                <div class="value validity">6 Months</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-details diamond" id="diamondDetails">
+                        <h4>Diamond Club Card</h4>
+                        <div class="card-info">
+                            <div class="card-info-item">
+                                <div class="label">Price</div>
+                                <div class="value price">Rs. 750</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Discount</div>
+                                <div class="value discount">20%</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Validity</div>
+                                <div class="value validity">6 Months</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-details emerald" id="emeraldDetails">
+                        <h4>Emerald Club Card</h4>
+                        <div class="card-info">
+                            <div class="card-info-item">
+                                <div class="label">Price</div>
+                                <div class="value price">Rs. 999</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Discount</div>
+                                <div class="value discount">30%</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Validity</div>
+                                <div class="value validity">6 Months</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-details vip" id="vipDetails">
+                        <h4>VIP Club Card</h4>
+                        <div class="card-info">
+                            <div class="card-info-item">
+                                <div class="label">Price</div>
+                                <div class="value price">Rs. 1,999</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Discount</div>
+                                <div class="value discount">50%</div>
+                            </div>
+                            <div class="card-info-item">
+                                <div class="label">Validity</div>
+                                <div class="value validity">6 Months</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="name">Name *</label>
+                    <input type="text" class="form-input" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email *</label>
+                    <input type="email" class="form-input" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number *</label>
+                    <input type="tel" class="form-input" id="phone" name="phone" required maxlength="10">
+                    <div class="error-message" id="phoneError">Please enter a valid 10-digit phone number</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="city">City/Town *</label>
+                    <input type="text" class="form-input" id="city" name="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="photo">Passport Size Photo *</label>
+                    <input type="file" class="file-input" id="photo" name="photo" accept="image/*" required>
+                    <div class="error-message" id="photoError">Please select a valid image file</div>
+                    
+                    <div class="image-preview-container" id="imagePreviewContainer">
+                        <img id="imagePreview" class="image-preview" alt="Preview">
+                        <button type="button" class="image-remove-btn" id="removeImageBtn">×</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="apply-btn" id="applyBtn">Apply</button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <p>Your application has been recorded! Please wait before we contact you.</p>
+                <a href="#" class="inform-btn" id="informBtn">
+                    <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
+                    Inform Us
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Card type selection handler
+        document.getElementById('cardType').addEventListener('change', function() {
+            const selectedCard = this.value;
+
+            // Hide all card details first
+            const allCardDetails = document.querySelectorAll('.card-details');
+            allCardDetails.forEach(detail => {
+                detail.style.display = 'none';
+            });
+
+            // Show the selected card details
+            if (selectedCard) {
+                const cardDetailsId = selectedCard + 'Details';
+                const selectedCardDetails = document.getElementById(cardDetailsId);
+                if (selectedCardDetails) {
+                    selectedCardDetails.style.display = 'block';
+                }
+            }
+        });
+
+        // Image preview functionality
+        const photoInput = document.getElementById('photo');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file) {
+                // Check if file is an image
+                if (!file.type.startsWith('image/')) {
+                    document.getElementById('photoError').style.display = 'block';
+                    document.getElementById('photoError').textContent = 'Please select a valid image file';
+                    return;
+                }
+
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    document.getElementById('photoError').style.display = 'block';
+                    document.getElementById('photoError').textContent = 'File size should be less than 5MB';
+                    return;
+                }
+
+                // Hide error message
+                document.getElementById('photoError').style.display = 'none';
+
+                // Create file reader
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreviewContainer.style.display = 'block';
+                };
+                
+                reader.readAsDataURL(file);
+            } else {
+                imagePreviewContainer.style.display = 'none';
+            }
+        });
+
+        // Remove image functionality
+        removeImageBtn.addEventListener('click', function() {
+            photoInput.value = '';
+            imagePreviewContainer.style.display = 'none';
+            document.getElementById('photoError').style.display = 'none';
+        });
+
+        // Initialize Supabase client
+        const supabaseUrl = 'https://csmiziefiecrtxdmahef.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Form elements
+        const form = document.getElementById('applicationForm');
+        const applyBtn = document.getElementById('applyBtn');
+        const successMessage = document.getElementById('successMessage');
+        const informBtn = document.getElementById('informBtn');
+
+        // Validation functions
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePhone(phone) {
+            const phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Image compression function
+        function compressImage(file, maxSizeKB = 2048) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = function() {
+                    const ratio = Math.min(800 / img.width, 800 / img.height);
+                    canvas.width = img.width * ratio;
+                    canvas.height = img.height * ratio;
+
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob((blob) => {
+                        if (blob.size <= maxSizeKB * 1024) {
+                            resolve(blob);
+                        } else {
+                            // Further compress if still too large
+                            canvas.toBlob((smallerBlob) => {
+                                resolve(smallerBlob);
+                            }, 'image/jpeg', 0.7);
+                        }
+                    }, 'image/jpeg', 0.8);
+                };
+
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        // Form submission handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Validation
+            let isValid = true;
+
+            // Email validation
+            if (!validateEmail(data.email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+
+            // Phone validation
+            if (!validatePhone(data.phone)) {
+                document.getElementById('phoneError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+
+            // Photo validation
+            if (!photoInput.files[0]) {
+                document.getElementById('photoError').style.display = 'block';
+                document.getElementById('photoError').textContent = 'Please select a photo';
+                isValid = false;
+            } else {
+                document.getElementById('photoError').style.display = 'none';
+            }
+
+            if (!isValid) return;
+
+            // Disable button and show loading
+            applyBtn.disabled = true;
+            applyBtn.textContent = 'Applying...';
+
+            try {
+                // Compress and upload photo
+                const photoFile = photoInput.files[0];
+                const compressedPhoto = await compressImage(photoFile);
+
+                const photoFileName = `${Date.now()}_${data.name.replace(/\s+/g, '_')}.jpg`;
+
+                const { data: photoData, error: photoError } = await supabase.storage
+                    .from('client-photos')
+                    .upload(photoFileName, compressedPhoto);
+
+                if (photoError) throw photoError;
+
+                // Prepare application data
+                const applicationData = {
+                    card_type: data.cardType,
+                    name: data.name,
+                    email: data.email,
+                    phone: data.phone,
+                    city: data.city,
+                    photo_url: photoData.path,
+                    application_date_time: new Date().toISOString()
+                };
+
+                // Insert into database
+                const { error: dbError } = await supabase
+                    .from('applications')
+                    .insert([applicationData]);
+
+                if (dbError) throw dbError;
+
+                // Show success message
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Setup WhatsApp link
+                const cardTypes = {
+                    silver: 'Silver Club Card',
+                    gold: 'Gold Club Card',
+                    diamond: 'Diamond Club Card',
+                    emerald: 'Emerald Club Card',
+                    vip: 'VIP Club Card'
+                };
+
+                const whatsappMessage = `I am ${data.name} from ${data.city} have applied for ${cardTypes[data.cardType]}. I wish to proceed to payment!`;
+                const whatsappUrl = `https://wa.me/919360385965?text=${encodeURIComponent(whatsappMessage)}`;
+
+                informBtn.href = whatsappUrl;
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting your application. Please try again.');
+            } finally {
+                applyBtn.disabled = false;
+                applyBtn.textContent = 'Apply';
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('email').addEventListener('blur', function() {
+            if (this.value && !validateEmail(this.value)) {
+                document.getElementById('emailError').style.display = 'block';
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('phone').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        document.getElementById('phone').addEventListener('blur', function() {
+            if (this.value && !validatePhone(this.value)) {
+                document.getElementById('phoneError').style.display = 'block';
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1111,6 +1111,7 @@ class MembershipCard {
         this.cardTitle = document.getElementById('cardTitle');
         this.cardPrice = document.getElementById('cardPrice');
         this.cardDiscount = document.getElementById('cardDiscount');
+        this.cardValidity = document.getElementById('cardValidity');
         
         this.cardData = {
             silver: {
@@ -1225,6 +1226,7 @@ class MembershipCard {
             this.cardTitle.textContent = data.title;
             this.cardPrice.textContent = `Price: ${data.price}`;
             this.cardDiscount.textContent = `Discount Offered: ${data.discount}`;
+            this.cardValidity.textContent = `Validity: 6 Months`;
             
             // Fade in new details
             this.cardDetails.classList.add('active');
