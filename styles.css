@@ -3216,7 +3216,7 @@ body {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     z-index: 3;
     pointer-events: none;
-    animation: continuousShine 1s linear infinite;
+    animation: continuousShine 2s linear infinite;
 }
 
 @keyframes continuousShine {
