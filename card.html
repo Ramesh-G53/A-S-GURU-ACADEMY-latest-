@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Your Card - A S Guru Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .go-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        .go-back-btn:hover {
+            background: #555;
+            transform: translateY(-2px);
+        }
+
+        .go-back-btn::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .main-heading {
+            color: #c0c0c0;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .sub-heading {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #222;
+            color: #fff;
+            width: 300px;
+            max-width: 100%;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .search-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c00 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .card-info-heading {
+            color: #c0c0c0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            color: #ff6b35;
+            font-size: 1.1rem;
+            margin: 20px 0;
+        }
+
+        .error {
+            color: #ff4444;
+            font-size: 1rem;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 8px;
+        }
+
+        .display-section {
+            margin-top: 30px;
+        }
+
+        /* Card Styles */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .membership-card {
+            width: min(90vw, 500px);
+            height: calc(min(90vw, 500px) * 0.75);
+            border-radius: 15px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        .card-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .card-silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%);
+        }
+
+        .card-gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+        }
+
+        .card-diamond {
+            background: linear-gradient(135deg, #b9f2ff 0%, #66d9ef 100%);
+        }
+
+        .card-emerald {
+            background: linear-gradient(135deg, #50c878 0%, #2e8b57 100%);
+        }
+
+        .card-vip {
+            background: linear-gradient(135deg, #8b00ff 0%, #4b0082 100%);
+        }
+
+        .card-strip {
+            background: #000;
+            height: calc(min(90vw, 500px) * 0.1);
+            margin: calc(min(90vw, 500px) * 0.016);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 calc(min(90vw, 500px) * 0.03);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-type {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            font-size: calc(min(90vw, 500px) * 0.028);
+        }
+
+        .card-circles {
+            display: flex;
+            gap: calc(min(90vw, 500px) * 0.016);
+            align-items: center;
+        }
+
+        .person-circle, .logo-circle {
+            width: calc(min(90vw, 500px) * 0.07);
+            height: calc(min(90vw, 500px) * 0.07);
+            border-radius: 50%;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .person-circle img, .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .card-body {
+            display: flex;
+            gap: calc(min(90vw, 500px) * 0.03);
+            padding: calc(min(90vw, 500px) * 0.03);
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .passport-photo {
+            width: calc(min(90vw, 500px) * 0.28);
+            height: calc(min(90vw, 500px) * 0.35);
+            border: 3px solid #000;
+            border-radius: 5px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .passport-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: calc(min(90vw, 500px) * 0.018);
+            height: calc(min(90vw, 500px) * 0.35);
+            padding-left: calc(min(90vw, 500px) * 0.03);
+        }
+
+        .holder-name, .location, .discount {
+            color: #000;
+            font-weight: 800;
+            margin: 0;
+            text-align: left;
+        }
+
+        .holder-name {
+            font-size: calc(min(90vw, 500px) * 0.045);
+        }
+
+        .location, .discount {
+            font-size: calc(min(90vw, 500px) * 0.04);
+        }
+
+        .validity-dates {
+            margin-top: auto;
+        }
+
+        .valid-from, .valid-till {
+            color: #000;
+            font-weight: 700;
+            font-size: calc(min(90vw, 500px) * 0.032);
+            margin: calc(min(90vw, 500px) * 0.004) 0;
+            text-align: left;
+        }
+
+        .card-diamond .holder-name,
+        .card-diamond .location,
+        .card-diamond .discount,
+        .card-diamond .valid-from,
+        .card-diamond .valid-till {
+            color: #fff !important;
+            font-weight: bold;
+        }
+
+        .card-emerald .holder-name,
+        .card-emerald .location,
+        .card-emerald .discount,
+        .card-emerald .valid-from,
+        .card-emerald .valid-till {
+            color: #fff !important;
+        }
+
+        .card-vip .holder-name,
+        .card-vip .location,
+        .card-vip .discount,
+        .card-vip .valid-from,
+        .card-vip .valid-till {
+            color: #fff !important;
+            font-weight: 900 !important;
+        }
+
+        .card-id-box {
+            position: absolute;
+            bottom: calc(min(90vw, 500px) * 0.03);
+            right: calc(min(90vw, 500px) * 0.03);
+            background: #fff;
+            color: #000;
+            padding: calc(min(90vw, 500px) * 0.018) calc(min(90vw, 500px) * 0.03);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: calc(min(90vw, 500px) * 0.032);
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            min-width: calc(min(90vw, 500px) * 0.15);
+            text-align: center;
+        }
+
+        .display-message {
+            background: #222;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .display-message .highlight {
+            color: #ff6b35;
+            font-weight: 700;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 2.2rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+
+            .display-message {
+                padding: 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="go-back-btn">Go Back</a>
+        
+        <h1 class="main-heading">Claim your card!</h1>
+        <p class="sub-heading">Enter your Card ID to claim!</p>
+        
+        <div class="search-container">
+            <input type="text" id="cardIdInput" class="search-input" placeholder="Enter your Card ID">
+            <button onclick="searchCard()" class="search-btn">Get!</button>
+        </div>
+
+        <div class="card-info-heading">Your Card Info</div>
+        
+        <div id="loadingMessage" class="loading hidden">Loading...</div>
+        <div id="errorMessage" class="error hidden"></div>
+        
+        <div id="displaySection" class="display-section hidden">
+            <div id="cardResult" class="card-result"></div>
+            <div class="display-message">
+                <span class="highlight">Screenshot your card and keep your Card ID safe.</span><br><br>
+                Card info is not to be shared to anyone at any cost.<br><br>
+                Please contact us for any queries regarding membership.<br><br>
+                <span class="highlight">Thank you!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = "https://csmiziefiecrtxdmahef.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbWl6aWVmaWVjcnR4ZG1haGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5MzI4MjYsImV4cCI6MjA2NjUwODgyNn0.foiIv2NTxY60h9uKOtvGA3g1mhkA_8bPormy6_ml_KM";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let currentCardData = null;
+
+        // Card type discounts and amounts
+        const cardConfig = {
+            silver: { discount: 10, amount: 300 },
+            gold: { discount: 15, amount: 500 },
+            diamond: { discount: 20, amount: 750 },
+            emerald: { discount: 30, amount: 999 },
+            vip: { discount: 50, amount: 1999 }
+        };
+
+        // Background images for each card type
+        const cardBackgrounds = {
+            silver: 'photos/bgs/silver.jpg',
+            gold: 'photos/bgs/gold.jpg',
+            diamond: 'photos/bgs/diamond.jpg',
+            emerald: 'photos/bgs/emarald.jpg',
+            vip: 'photos/bgs/vip.jpg'
+        };
+
+        async function searchCard() {
+            const cardId = document.getElementById('cardIdInput').value.trim();
+            
+            if (!cardId) {
+                showError('Please enter a Card ID');
+                return;
+            }
+
+            showLoading(true);
+            hideError();
+            hideCardResult();
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('members')
+                    .select('*')
+                    .eq('cardId', cardId)
+                    .single();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (!data) {
+                    showError('Card ID not found. Please check your Card ID and try again.');
+                    return;
+                }
+
+                currentCardData = data;
+                await displayCard(data);
+                
+            } catch (error) {
+                console.error('Error fetching card:', error);
+                showError('Card ID not found. Please check your Card ID and try again.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function displayCard(data) {
+            const cardType = data.card_type.toLowerCase();
+            const config = cardConfig[cardType];
+            
+            if (!config) {
+                showError('Invalid card type');
+                return;
+            }
+
+            let photoUrl = '';
+            if (data.photo_url) {
+                const { data: urlData } = await supabaseClient.storage
+                    .from('client-photos')
+                    .getPublicUrl(data.photo_url);
+                photoUrl = urlData.publicUrl;
+            }
+
+            const backgroundImage = cardBackgrounds[cardType] || 'photos/bgs/silver.jpg';
+
+            const cardHTML = `
+                <div class="card-container">
+                    <div class="membership-card card-${cardType}">
+                        <img src="${backgroundImage}" alt="${cardType.charAt(0).toUpperCase() + cardType.slice(1)} Card Background" class="card-bg-image">
+                        
+                        <div class="card-strip">
+                            <div class="card-type">${cardType.toUpperCase()} CLUB CARD</div>
+                            <div class="card-circles">
+                                <div class="person-circle">
+                                    <img src="photos/profile.webp" alt="Person">
+                                </div>
+                                <div class="logo-circle">
+                                    <img src="photos/newlogo.png" alt="Logo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="passport-photo">
+                                <img src="${photoUrl || 'https://images.pexels.com/photos/1024311/pexels-photo-1024311.jpeg?auto=compress&cs=tinysrgb&w=100&h=125&fit=crop'}" alt="Passport Photo">
+                            </div>
+                            <div class="card-info">
+                                <div class="holder-name">Name: ${data.name}</div>
+                                <div class="location">Location: ${data.city}</div>
+                                <div class="discount">Discount: ${config.discount}%</div>
+                                <div class="validity-dates">
+                                    <div class="valid-from">Valid from: ${data.fromDate}</div>
+                                    <div class="valid-till">Valid till: ${data.toDate}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-id-box">${data.cardId}</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('cardResult').innerHTML = cardHTML;
+            document.getElementById('displaySection').classList.remove('hidden');
+        }
+
+        function showLoading(show) {
+            const loadingElement = document.getElementById('loadingMessage');
+            if (show) {
+                loadingElement.classList.remove('hidden');
+            } else {
+                loadingElement.classList.add('hidden');
+            }
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        function hideCardResult() {
+            document.getElementById('displaySection').classList.add('hidden');
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('cardIdInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCard();
+            }
+        });
+    </script>
+</body>
+</html>
