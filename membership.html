@@ -1,0 +1,657 @@
+<!-- MEMBERSHIP CONTROL SECTION - ADD THIS BEFORE THE FOOTER -->
+<div class="membership-section">
+    <div class="membership-container">
+        <h2 class="membership-title">Membership Control</h2>
+        
+        <!-- Applications Section -->
+        <div class="applications-section">
+            <h3 class="section-subtitle">Membership Applications</h3>
+            <div class="applications-list" id="applicationsList">
+                <div class="loading-message">Loading applications...</div>
+            </div>
+        </div>
+        
+        <!-- Members Section -->
+        <div class="members-section">
+            <h3 class="section-subtitle">Members</h3>
+            <div class="members-list" id="membersList">
+                <div class="loading-message">Loading members...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <h3>Confirm Rejection</h3>
+        <p>Are you sure you want to reject this application?</p>
+        <div class="modal-buttons">
+            <button id="confirmRejectBtn" class="modal-btn confirm-btn">Yes</button>
+            <button id="cancelRejectBtn" class="modal-btn cancel-btn">No</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* MEMBERSHIP CONTROL STYLES - ADD TO YOUR EXISTING STYLES */
+.membership-section {
+    margin-top: 40px;
+    border-top: 2px solid #f1f1f1;
+    padding-top: 30px;
+}
+
+.membership-container {
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.membership-title {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ff6b35;
+}
+
+.applications-section, .members-section {
+    margin-bottom: 30px;
+}
+
+.section-subtitle {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.applications-list, .members-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    background: #2a2a2a;
+}
+
+.application-item, .member-item {
+    background: #333;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid #ff6b35;
+}
+
+.application-item:last-child, .member-item:last-child {
+    margin-bottom: 0;
+}
+
+.application-header, .member-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.application-number, .member-id {
+    color: #ff6b35;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.application-date, .member-date {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.application-details, .member-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.detail-label {
+    color: #ff6b35;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.application-actions, .member-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.approve-btn, .reject-btn, .whatsapp-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.approve-btn {
+    background: #27ae60;
+    color: white;
+}
+
+.approve-btn:hover {
+    background: #219a52;
+    transform: translateY(-1px);
+}
+
+.reject-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.whatsapp-btn {
+    background: #25d366;
+    color: white;
+}
+
+.whatsapp-btn:hover {
+    background: #20b658;
+    transform: translateY(-1px);
+}
+
+.no-applications, .no-members {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 40px;
+    font-size: 1.1rem;
+}
+
+.loading-message {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.modal-content p {
+    color: #7f8c8d;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.confirm-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: #c0392b;
+}
+
+.cancel-btn {
+    background: #95a5a6;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .membership-container {
+        padding: 20px;
+    }
+    
+    .application-details, .member-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .application-actions, .member-actions {
+        flex-direction: column;
+    }
+    
+    .approve-btn, .reject-btn, .whatsapp-btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+</style>
+
+<script>
+// MEMBERSHIP CONTROL JAVASCRIPT - ADD TO YOUR EXISTING SCRIPT
+
+// Membership Control Variables
+let currentApplicationToReject = null;
+let membershipApplications = [];
+let members = [];
+
+// DOM Elements for Membership Control
+const applicationsList = document.getElementById('applicationsList');
+const membersList = document.getElementById('membersList');
+const confirmationModal = document.getElementById('confirmationModal');
+const confirmRejectBtn = document.getElementById('confirmRejectBtn');
+const cancelRejectBtn = document.getElementById('cancelRejectBtn');
+
+// Initialize Membership Control (call this in your initializeDashboard function)
+async function initializeMembershipControl() {
+    await loadApplications();
+    await loadMembers();
+    await cleanupExpiredMembers();
+    
+    // Setup modal event listeners
+    confirmRejectBtn.addEventListener('click', handleConfirmReject);
+    cancelRejectBtn.addEventListener('click', handleCancelReject);
+    
+    // Close modal when clicking outside
+    confirmationModal.addEventListener('click', (e) => {
+        if (e.target === confirmationModal) {
+            handleCancelReject();
+        }
+    });
+}
+
+// Load Applications from Database
+async function loadApplications() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('applications')
+            .select('*')
+            .order('application_date_time', { ascending: true });
+
+        if (error) throw error;
+
+        membershipApplications = data;
+        renderApplications();
+
+    } catch (error) {
+        console.error('Error loading applications:', error);
+        applicationsList.innerHTML = `<div class="no-applications">Error loading applications: ${error.message}</div>`;
+    }
+}
+
+// Render Applications
+function renderApplications() {
+    if (membershipApplications.length === 0) {
+        applicationsList.innerHTML = '<div class="no-applications">No applications yet</div>';
+        return;
+    }
+
+    applicationsList.innerHTML = membershipApplications.map((app, index) => `
+        <div class="application-item">
+            <div class="application-header">
+                <div class="application-number">Application #${index + 1}</div>
+                <div class="application-date">Applied on: ${formatDate(new Date(app.application_date_time))}</div>
+            </div>
+            <div class="application-details">
+                <div class="detail-item">
+                    <span class="detail-label">Name:</span>${app.name}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Card Type:</span>${app.card_type}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>${app.email}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Phone:</span>${app.phone}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">City/Town:</span>${app.city}
+                </div>
+            </div>
+            <div class="application-actions">
+                <button class="approve-btn" onclick="approveApplication('${app.id}')">Approve</button>
+                <button class="reject-btn" onclick="showRejectConfirmation('${app.id}')">Reject</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Show Reject Confirmation Modal
+function showRejectConfirmation(applicationId) {
+    currentApplicationToReject = applicationId;
+    confirmationModal.style.display = 'block';
+}
+
+// Handle Confirm Reject
+async function handleConfirmReject() {
+    if (!currentApplicationToReject) return;
+
+    confirmationModal.style.display = 'none';
+    showLoading();
+
+    try {
+        // Get application data first
+        const application = membershipApplications.find(app => app.id === currentApplicationToReject);
+        
+        if (!application) {
+            throw new Error('Application not found');
+        }
+
+        // Delete photo from storage if exists
+        if (application.photo_url) {
+            const photoPath = application.photo_url.split('/').pop();
+            await supabaseClient.storage
+                .from('client-photos')
+                .remove([photoPath]);
+        }
+
+        // Delete application from database
+        const { error } = await supabaseClient
+            .from('applications')
+            .delete()
+            .eq('id', currentApplicationToReject);
+
+        if (error) throw error;
+
+        alert('Application rejected successfully!');
+        await loadApplications();
+
+    } catch (error) {
+        console.error('Error rejecting application:', error);
+        alert('Error rejecting application: ' + error.message);
+    } finally {
+        hideLoading();
+        currentApplicationToReject = null;
+    }
+}
+
+// Handle Cancel Reject
+function handleCancelReject() {
+    confirmationModal.style.display = 'none';
+    currentApplicationToReject = null;
+}
+
+// Approve Application
+async function approveApplication(applicationId) {
+    showLoading();
+
+    try {
+        // Get application data
+        const application = membershipApplications.find(app => app.id === applicationId);
+        
+        if (!application) {
+            throw new Error('Application not found');
+        }
+
+        // Calculate dates
+        const fromDate = new Date();
+        const toDate = new Date(fromDate);
+        toDate.setMonth(toDate.getMonth() + 6);
+
+        // Format dates as dd/mm/yyyy
+        const formatDateString = (date) => {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        };
+
+        // Generate card ID
+        const cardId = `CARD-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+
+        // Insert into members table
+        const { error: insertError } = await supabaseClient
+            .from('members')
+            .insert([{
+                id: application.id,
+                application_date_time: application.application_date_time,
+                card_type: application.card_type,
+                name: application.name,
+                email: application.email,
+                phone: application.phone,
+                city: application.city,
+                photo_url: application.photo_url,
+                fromDate: formatDateString(fromDate),
+                toDate: formatDateString(toDate),
+                cardId: cardId
+            }]);
+
+        if (insertError) throw insertError;
+
+        // Delete from applications table
+        const { error: deleteError } = await supabaseClient
+            .from('applications')
+            .delete()
+            .eq('id', applicationId);
+
+        if (deleteError) throw deleteError;
+
+        alert('Application approved successfully!');
+        await loadApplications();
+        await loadMembers();
+
+    } catch (error) {
+        console.error('Error approving application:', error);
+        alert('Error approving application: ' + error.message);
+    } finally {
+        hideLoading();
+    }
+}
+
+// Load Members from Database
+async function loadMembers() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('members')
+            .select('*')
+            .order('application_date_time', { ascending: false });
+
+        if (error) throw error;
+
+        members = data;
+        renderMembers();
+
+    } catch (error) {
+        console.error('Error loading members:', error);
+        membersList.innerHTML = `<div class="no-members">Error loading members: ${error.message}</div>`;
+    }
+}
+
+// Render Members
+function renderMembers() {
+    if (members.length === 0) {
+        membersList.innerHTML = '<div class="no-members">No members yet</div>';
+        return;
+    }
+
+    membersList.innerHTML = members.map((member) => `
+        <div class="member-item">
+            <div class="member-header">
+                <div class="member-id">Card ID: ${member.cardId}</div>
+                <div class="member-date">Valid: ${member.fromDate} to ${member.toDate}</div>
+            </div>
+            <div class="member-details">
+                <div class="detail-item">
+                    <span class="detail-label">Name:</span>${member.name}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Card Type:</span>${member.card_type}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>${member.email}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Phone:</span>${member.phone}
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">City/Town:</span>${member.city}
+                </div>
+            </div>
+            <div class="member-actions">
+                <button class="whatsapp-btn" onclick="sendCardInfo('${member.phone}', '${member.name}', '${member.card_type}', '${member.cardId}')">
+                    Send Card Info to Member
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Send Card Info via WhatsApp
+function sendCardInfo(phone, name, cardType, cardId) {
+    const message = `Hi ${name}! We have Approved your ${cardType} card application. Use the card code in our website to collect it. Thank you! CARD CODE: ${cardId}. (Please contact for technical support)`;
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Clean phone number (remove any non-digit characters except +)
+    const cleanPhone = phone.replace(/[^\d+]/g, '');
+    
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+// Clean up Expired Members
+async function cleanupExpiredMembers() {
+    try {
+        const today = new Date();
+        const todayString = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+        
+        // Get expired members
+        const { data: expiredMembers, error: fetchError } = await supabaseClient
+            .from('members')
+            .select('*');
+
+        if (fetchError) throw fetchError;
+
+        if (expiredMembers && expiredMembers.length > 0) {
+            const toDeleteMembers = expiredMembers.filter(member => {
+                const [day, month, year] = member.toDate.split('/');
+                const memberExpiry = new Date(year, month - 1, day);
+                return memberExpiry < today;
+            });
+
+            console.log(`Found ${toDeleteMembers.length} expired members to cleanup`);
+
+            // Delete each expired member
+            for (const member of toDeleteMembers) {
+                try {
+                    // Delete photo from storage if exists
+                    if (member.photo_url) {
+                        const photoPath = member.photo_url.split('/').pop();
+                        await supabaseClient.storage
+                            .from('client-photos')
+                            .remove([photoPath]);
+                    }
+
+                    // Delete member from database
+                    await supabaseClient
+                        .from('members')
+                        .delete()
+                        .eq('id', member.id);
+
+                    console.log(`Cleaned up expired member: ${member.name}`);
+                } catch (cleanupError) {
+                    console.error(`Error cleaning up member ${member.name}:`, cleanupError);
+                }
+            }
+
+            // Reload members if any were cleaned up
+            if (toDeleteMembers.length > 0) {
+                await loadMembers();
+            }
+        }
+
+    } catch (error) {
+        console.error('Error during member cleanup:', error);
+    }
+}
+
+// Update your existing initializeDashboard function to include membership control
+// Add this line in your initializeDashboard function after the existing setup:
+// await initializeMembershipControl();
+
+// Also, update your DOMContentLoaded event listener to include the membership initialization
+document.addEventListener('DOMContentLoaded', async function() {
+    // Your existing code...
+    // Then add:
+    // Make sure to call initializeMembershipControl() in your initializeDashboard function
+});
+</script>
+
+<!-- UPDATE YOUR EXISTING initializeDashboard FUNCTION -->
+<script>
+// Find your existing initializeDashboard function and add this line after loading events:
+// await initializeMembershipControl();
+
+// Here's what your updated initializeDashboard function should look like:
+async function initializeDashboard(user) {
+    // Your existing code...
+    
+    // Setup events functionality
+    setupEventsForm();
+    await loadEvents();
+    await loadTestimonials();
+    await loadVideos();
+    await cleanupExpiredEvents();
+    
+    // ADD THIS LINE - Initialize membership control
+    await initializeMembershipControl();
+
+    // Hide loading overlay
+    hideLoading();
+}
+</script>

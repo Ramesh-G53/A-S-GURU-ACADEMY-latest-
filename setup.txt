@@ -214,3 +214,14 @@
 3. Check for any console errors during submission
 
 Your membership application system is now ready to use! 🎉
+
+
+
+
+below just above the footer div i want a section which has black bg and rounded corners. the div heading is "Membership Control" inside it i want another div which is titled "Membership Applications" below that i want u to display a list of applications in a structured format displaying following data: application number: <no>  Name: <name> card type: <type> email: <email> phone number: <phno> city/town: <city> applied on: <application date>. below each application data keep a green button called "Approve" and a red button called "Reject" i want u to use the same supabase url and key (im using same supabase account) get the data to be displayed from a table called: applications where column names are application_date_time (timestamptz), card_type (text) , name (text), email (text) , phone(text), city (text), photo_url(text) no need to display photo in the admin dash. when no records in the table display "No applications yet" arrange the applications in the oldest first order. if i click Reject button it should display a pop up saying "Confirm rejection" yes no button. when yes button is pressed it should delete the row of the specific application entry and also delete the respective photo stored in storage bucket named "client-photos" once deleted give a successful rejection complete alert if i press no in the confirm rejection box it should not delete anything. if  i click approve button the records from the applications table to be transferred to a table called "members" where column names are  id
+application_date_time
+card_type
+name
+email
+phone
+city, photo_url, fromDate (date) in dd/mm/yyyy and toDate(date) from date is when application is approved, to date is application approval date + 6 months.  (ex: 01/01/2025 to 01/07/2025) after data is transferred to members table the row in applications table to be deleted. (dont delete photo in client-photos as members table has photo_url coloumn) keep an autodelete function to delete the specific row from the members table and the respective photo from the bucket when toDate is reached. below the application div in admin dashboard i want another div called members where data from members table to be displayed. below each entry have a green button "send card info to member". this button opens whatsapp chat of the respective phone number with a pre typed conformation message as "Hi <name>! We have Approved your <card type> card application. Use the card code in our website to collect it. Thank you! CARD CODE: <cardID>. (Please contact for technical support) . only list of members and their card types and cardId and phone numbers and all deails in members table except photo.retain all existing code of admin.html and just add the extea requested functionality to the end of the code.provide  comment to identify everything. give an admin.html file for this

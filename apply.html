@@ -905,7 +905,7 @@
                     vip: 'VIP Club Card'
                 };
 
-                const whatsappMessage = `I am ${data.name} from ${data.city} have applied for ${cardTypes[data.cardType]}. I wish to proceed to payment!`;
+                const whatsappMessage = `I am ${data.name} from ${data.city} have applied for ${cardTypes[data.cardType]} using ${data.email}. I wish to proceed to payment!`;
                 const whatsappUrl = `https://wa.me/919360385965?text=${encodeURIComponent(whatsappMessage)}`;
 
                 informBtn.href = whatsappUrl;
